@@ -14,6 +14,11 @@ var usersSchema = new mongoose.Schema({
           message: '{VALUE} is not a valid email'
         }
       },
+      role: {
+        type: String,
+        enum: ['Admin', 'Coach', 'Candidat'],
+        default: 'Candidat'
+      },
       password: { type: String, Required: true, minlength: 8 },
       admin: { type: mongoose.Schema.Types.ObjectId, ref: 'Admin' },
       candidat: { type: mongoose.Schema.Types.ObjectId, ref: 'Candidats' },
