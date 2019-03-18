@@ -1,6 +1,8 @@
 var express = require('express');
 var bcrypt = require('bcrypt')
-
+var jwt = require('jsonwebtoken')
+var User = require('../model/users')
+var Candidats = require('../model/candidats')
 var Coach = require('../model/coachs');
 var router = express.Router()
 
@@ -48,21 +50,6 @@ router.post('/addCoach', function (req, res) {
             })
         });
 })
-module.exports = router;
-var express = require('express')
-var bcrypt = require('bcrypt')
-var jwt = require('jsonwebtoken')
-var User = require('../model/users')
-var Candidats = require('../model/candidats')
-
-
-
-var router = express.Router()
-
-
-
-const JWT_SIGN_SECRET = 'KJN4511qkqhxq5585x5s85f8f2x8ww8w55x8s52q5w2q2'
-
 
 router.post('/registerCandidat', function (req, res) {
     Candidats.findOne({

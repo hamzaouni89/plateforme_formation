@@ -32,7 +32,7 @@ router.post('/addCours', function (req, res, next) {
         image: req.body.image,
         type: req.body.type,
         owner: req.body.owner,
-        number: req.body.number
+        niveau: req.body.niveau
 
 
 
@@ -86,7 +86,7 @@ router.get('/deleteCours/:id', function (req, res, next) {
 router.post('/updateCours/:id', function (req, res, next) {
     console.log(req.body)
     var id = req.params.id
-    Cours.findByIdAndUpdate({ "_id": id }, { $set: { titre: req.body.titre, contenue: req.body.contenue, type: req.body.type, image: req.body.image, date: new Date(), number: req.body.number} }).exec(function (err, cours) {
+    Cours.findByIdAndUpdate({ "_id": id }, { $set: { titre: req.body.titre, contenue: req.body.contenue, type: req.body.type, image: req.body.image, date: new Date(), niveau: req.body.niveau} }).exec(function (err, cours) {
         if (err) {
             res.send(err)
         }
