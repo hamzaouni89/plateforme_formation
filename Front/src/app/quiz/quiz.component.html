@@ -1,0 +1,119 @@
+<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12 mb-5">
+  <div class="section-block">
+    <h5 class="section-title">Quiz</h5>
+
+  </div>
+  <div class="tab-outline">
+    <ul class="nav nav-tabs" id="myTab2" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="tab-outline-one" data-toggle="tab" href="#outline-one" role="tab" aria-controls="home"
+          aria-selected="true">Ajouter Quiz</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="tab-outline-two" data-toggle="tab" href="#outline-two" role="tab" aria-controls="profile"
+          aria-selected="false">Modifier Quiz</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="tab-outline-three" data-toggle="tab" href="#outline-three" role="tab" aria-controls="contact"
+          aria-selected="false">Liste des Quiz</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent2">
+      <div class="tab-pane fade " id="outline-one" role="tabpanel" aria-labelledby="tab-outline-one">
+        <h5 class="card-header">Ajouter Quiz</h5>
+        <div class="card-body">
+          <form [formGroup]="quizForm">
+            <div class="form-group">
+              <label for="question">Question : </label>
+              <input type="text" class="form-control is-valid" formControlName="question"  placeholder="First name" value="First name"
+                required>
+                <div *ngIf="quizForm?.controls['question']?.hasError('required')" style="color: red"> Required question</div>
+            </div>
+            <div class="form-group">
+              <label class="col-form-label" for="choix1">Option 1</label>
+              <input type="text"  formControlName="choix1"  class="form-control is-invalid" >
+              <div *ngIf="quizForm?.controls['choix1']?.hasError('required')" style="color: red"> Required option 1</div>
+            </div>
+            <div class="form-group">
+              <label class="col-form-label" for="choix2">Option 2</label>
+              <input type="text"  formControlName="choix2"  class="form-control is-invalid" >
+              <div *ngIf="quizForm?.controls['choix2']?.hasError('required')" style="color: red"> Required option 2</div>
+            </div>
+            <div class="form-group">
+              <label class="col-form-label" for="choix3">Option 3</label>
+              <input type="text"  formControlName="choix3"  class="form-control is-invalid" >
+              <div *ngIf="quizForm?.controls['choix3']?.hasError('required')" style="color: red"> Required option 3</div>
+            </div>
+            <div class="form-group">
+              <label class="col-form-label" for="choix4">Option 4</label>
+              <input type="text"  formControlName="choix4" class="form-control is-invalid" >
+              <div *ngIf="quizForm?.controls['choix4']?.hasError('required')" style="color: red"> Required option 4</div>
+            </div>
+            <div class="form-group">
+              <label class="col-form-label" for="choix4">Reponse</label>
+              <input type="text"  formControlName="reponse" class="form-control is-invalid" >
+              <div *ngIf="quizForm?.controls['reponse']?.hasError('required')" style="color: red"> Required reponse</div>
+            </div>
+            <div class="form-group">
+                <button type="submit" [disabled]="!quizForm.valid" (click)="ajouterQuiz()"
+                  class="btn btn-success">Ajouter</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="outline-two" role="tabpanel" aria-labelledby="tab-outline-two">
+
+      </div>
+      <div class="tab-pane fade show active" id="outline-three" role="tabpanel" aria-labelledby="tab-outline-three">
+        <div class="container py-5">
+          <div class="col-md-12">
+             <h1 *ngIf="!isLoading" style="width: 100%; text-align: center; margin: auto;">
+              <h1>question</h1>
+                        <!--   <countdown [config]="{leftTime: 300}">$!m!:$!s!</countdown> -->
+                        </h1>
+            <form>
+              <div *ngFor="let question of quiz; let i = index">
+                <div class="question">
+                  <h2>{{ question.question }}</h2>
+                </div>
+                <div name="reponse{{i}}" [(ngModel)]="reponse[i]">
+                  <div>
+                    <label class="custom-control custom-radio custom-control-inline">
+                      <input type="radio" name="radio-inline" checked="" class="custom-control-input" value="1"><span
+                        class="custom-control-label">{{
+                        question.choix1}}</span>
+                    </label>
+                  </div>
+
+                  <div>
+                    <label class="custom-control custom-radio custom-control-inline">
+                      <input type="radio" name="radio-inline" class="custom-control-input" value="2"><span class="custom-control-label">{{
+                        question.choix2}}</span>
+                    </label>
+                  </div>
+                  <div>
+                    <label class="custom-control custom-radio custom-control-inline">
+                      <input type="radio" name="radio-inline" class="custom-control-input" value="3"><span class="custom-control-label">{{
+                        question.choix3}}</span>
+                    </label>
+                  </div>
+                  <div>
+                    <label class="custom-control custom-radio custom-control-inline">
+                      <input type="radio" name="radio-inline" class="custom-control-input" value="4"><span class="custom-control-label">{{
+                        question.choix4}}</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <button type="submit" (click)="onSubmit()" style="width: 100%; text-align: center; font-size: 30px;"
+                color="accent">SUBMIT</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

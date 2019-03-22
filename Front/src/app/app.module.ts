@@ -9,8 +9,11 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { TestComponent } from './test/test.component';
 import { CoursComponent } from './cours/cours.component';
-import { TestInscriComponent } from './test-inscri/test-inscri.component';
 import { ProfilComponent } from './profil/profil.component';
+import { QuizComponent } from './quiz/quiz.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
 
 @NgModule({
   declarations: [
@@ -21,11 +24,15 @@ import { ProfilComponent } from './profil/profil.component';
     RegisterComponent,
     TestComponent,
     CoursComponent,
-    TestInscriComponent,
-    ProfilComponent
+    ProfilComponent,
+    QuizComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpModule,
+    HttpClientModule,
     AppRoutingModule
   ],
   providers: [],

@@ -8,4 +8,4 @@ var testSchema = new mongoose.Schema({
     // owner: { type: mongoose.Schema.Types.ObjectId, ref: 'Admin' }
 
 })
-module.exports = mongoose.model('test', testSchema)
+module.exports = mongoose.model('Test', testSchema)

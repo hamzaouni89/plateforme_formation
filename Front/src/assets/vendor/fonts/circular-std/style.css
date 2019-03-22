@@ -12,7 +12,7 @@ src: local('Circular Std Black'), url('CircularStd-Black.woff') format('woff');
 font-family: 'Circular Std Book';
 font-style: normal;
 font-weight: normal;
-src: local('Circular Std Book'), url('CircularStd-Book.woff') format('woff');
+src: local('Circular Std Book'),  format('woff');
 }
 
 
@@ -36,7 +36,7 @@ src: local('Circular Std Black Italic'), url('CircularStd-BlackItalic.woff') for
 font-family: 'Circular Std Bold';
 font-style: normal;
 font-weight: normal;
-src: local('Circular Std Bold'), url('CircularStd-Bold.woff') format('woff');
+src: local('Circular Std Bold'),  format('woff');
 }
 
 

@@ -201,10 +201,7 @@ router.post('/addCandidats/:id', function (req, res, next) {
 
 
 router.post('/updateUser/:id', function (req, res, next) {
-
     var id = req.params.id
-
-
     Candidats.findByIdAndUpdate({
         "_id": id
     }, {

@@ -7,9 +7,8 @@ const storage = multer.diskStorage({
         cb(null, './uploads/');
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname);
+        cb(null, file.originalname + '-' + Date.now());
     }
-
 });
 
 const upload = multer({
@@ -18,23 +17,20 @@ const upload = multer({
 
 const Cours = require('../model/cours')
 
-router.post('/upload', upload.single("Image"), function (req, res, next) {
+router.post('/upload', upload.single("contenue"), function (req, res, next) {
 })
-router.get('/getImage/:name', function (req, res, next) {
-    res.sendFile('../uploads/' + req.params.name);
+router.get('/getContenue/:name', function (req, res, next) {
+    res.sendFile('C:/Users/houni/OneDrive/Bureau/Formation/Niveau4/Projet/uploads/' + req.params.name);
 })
-router.post('/addCours', function (req, res, next) {
+router.post('/addCours/:id', function (req, res, next) {
     console.log(req.body);
     var cours = new Cours({
-        date: new Date(),
         titre: req.body.titre,
         contenue: req.body.contenue,
-        image: req.body.image,
         type: req.body.type,
-        owner: req.body.owner,
+        owner: req.params.id,
+        date: new Date(),
         niveau: req.body.niveau
-
-
 
     });
     console.log(req.body)
