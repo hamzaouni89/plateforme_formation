@@ -8,13 +8,20 @@ var authentification = require('./auth').authentification;
 
 router.post('/addQuiz', function (req, res, next) {
     var quiz = new Quiz({
-        question: req.body.question,
-        choix1: req.body.choix1,
-        choix2: req.body.choix2,
-        choix3: req.body.choix3,
-        choix4: req.body.choix4,
-        reponse : req.body.reponse,
-        test: req.body.test
+        titre : req.body.titre,
+        descreption : req.body.titre,
+        dure : req.body.dure,
+        type : req.body.type,
+        niveau : req.body.niveau,
+       // questions: req.body.questions,
+        questions: req.body.questions,
+        // question: req.body.questions.question,
+        // choix1: req.body.questions.choix1,
+        // choix2: req.body.questions.choix2,
+        // choix3: req.body.questions.choix3,
+        // choix4: req.body.questions.choix4,
+        // reponse: req.body.questions.reponse,
+        
     });
     console.log(req.body)
     quiz.save(function (err, quiz) {
