@@ -52,12 +52,7 @@ export class QuizComponent implements OnInit {
       console.log(res);
     });
   }
-  ajouterQuestion() {
-    console.log(this.quizArrayForm.value)
-    this.quizService.ajouterQuiz(this.quizArrayForm.value).subscribe((res) => {
-      console.log(res);
-    });
-  }
+ 
 
  
   ngOnInit() {

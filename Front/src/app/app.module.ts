@@ -14,6 +14,7 @@ import { QuizComponent } from './quiz/quiz.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
+import { DashbordComponent } from './dashbord/dashbord.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { HttpModule } from '@angular/http';
     TestComponent,
     CoursComponent,
     ProfilComponent,
-    QuizComponent
+    QuizComponent,
+    DashbordComponent
   ],
   imports: [
     BrowserModule,

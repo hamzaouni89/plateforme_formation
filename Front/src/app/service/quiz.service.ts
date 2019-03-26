@@ -17,7 +17,6 @@ export class QuizService {
   ajouterQuiz(quiz) {
     // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
     return this.http.post('http://localhost:3000/quiz/addQuiz',quiz )
-        .map(res => res);
 }
 
   getData() {

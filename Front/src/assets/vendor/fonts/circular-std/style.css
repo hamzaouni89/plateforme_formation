@@ -4,7 +4,7 @@
 font-family: 'Circular Std Black';
 font-style: normal;
 font-weight: normal;
-src: local('Circular Std Black'), url('CircularStd-Black.woff') format('woff');
+src: local('Circular Std Black'),  format('woff');
 }
 
 
@@ -20,7 +20,7 @@ src: local('Circular Std Book'),  format('woff');
 font-family: 'Circular Std Medium';
 font-style: normal;
 font-weight: normal;
-src: local('Circular Std Medium'), url('CircularStd-Medium.woff') format('woff');
+src: local('Circular Std Medium'),  format('woff');
 }
 
 
@@ -28,7 +28,7 @@ src: local('Circular Std Medium'), url('CircularStd-Medium.woff') format('woff')
 font-family: 'Circular Std Black Italic';
 font-style: normal;
 font-weight: normal;
-src: local('Circular Std Black Italic'), url('CircularStd-BlackItalic.woff') format('woff');
+src: local('Circular Std Black Italic'), format('woff');
 }
 
 
@@ -44,7 +44,7 @@ src: local('Circular Std Bold'),  format('woff');
 font-family: 'Circular Std Bold Italic';
 font-style: normal;
 font-weight: normal;
-src: local('Circular Std Bold Italic'), url('CircularStd-BoldItalic.woff') format('woff');
+src: local('Circular Std Bold Italic'),format('woff');
 }
 
 
@@ -52,7 +52,7 @@ src: local('Circular Std Bold Italic'), url('CircularStd-BoldItalic.woff') forma
 font-family: 'Circular Std Book Italic';
 font-style: normal;
 font-weight: normal;
-src: local('Circular Std Book Italic'), url('CircularStd-BookItalic.woff') format('woff');
+src: local('Circular Std Book Italic'),  format('woff');
 }
 
 
@@ -60,5 +60,5 @@ src: local('Circular Std Book Italic'), url('CircularStd-BookItalic.woff') forma
 font-family: 'Circular Std Medium Italic';
 font-style: normal;
 font-weight: normal;
-src: local('Circular Std Medium Italic'), url('CircularStd-MediumItalic.woff') format('woff');
+src: local('Circular Std Medium Italic'),  format('woff');
 }

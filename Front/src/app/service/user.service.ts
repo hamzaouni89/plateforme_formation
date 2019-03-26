@@ -8,25 +8,26 @@ import 'rxjs/add/operator/map'
 
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class UserService {
 
-  connectedUser: any;
+    connectedUser: any;
+    Coachs: any;
 
-    constructor(private http: HttpClient ,private router: Router) {
+    constructor(private http: HttpClient, private router: Router) {
         this.connectedUser = this.getDecodedToken();
     }
 
-    getUsers() {
+    getCoach() {
         let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-        return this.http.get('http://localhost:3000/users/getUsers', { headers: header })
+        return this.http.get('http://localhost:3000/users/getCoach', { headers: header })
             .map(res => res);
     }
 
-    createUser(user) {
+    createCoach(user) {
         // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-        return this.http.post('http://localhost:3000/users/register', user)
+        return this.http.post('http://localhost:3000/users/registerCoach', user)
             .map(res => res);
     }
 
@@ -71,8 +72,8 @@ export class UserService {
     }
 
     logout() {
-      
-      localStorage.removeItem('email');
-      this.router.navigate(['/']);
-  }
+
+        localStorage.removeItem('email');
+        this.router.navigate(['/']);
+    }
 }
