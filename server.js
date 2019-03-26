@@ -7,9 +7,16 @@ var users = require('./api/apiUser')
 var test = require('./api/apiTest')
 var cours = require('./api/apiCours')
 var quiz = require('./api/apiQuiz')
+const passport = require('passport');
 
 var cors = require('cors');
 
+// Passport Config
+require('./api/passport')(passport);
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
