@@ -103,7 +103,16 @@ router.post('/registerCandidat', function (req, res) {
             })
         });
 })
-
+router.get('/getCoach', function (req, res, next) {
+    Coachs.find().populate('owner').exec(function (err, coachs) {
+        if (err) {
+            res.send(err)
+        }
+        else {
+            res.send(coachs)
+        }
+    })
+})
 
 router.get('/getuser/:id', function (req, res, next) {
     var id = req.params.id
