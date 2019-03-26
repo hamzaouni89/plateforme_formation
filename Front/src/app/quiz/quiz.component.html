@@ -104,10 +104,12 @@
                       <input type="text" formControlName="reponse" class="form-control is-invalid">
                       <div *ngIf="q.controls['reponse']?.hasError('required')" style="color: red"> Required
                         reponse</div>
+                        <div *ngIf="q.value.reponse !== q.value.choix1 && q.value.reponse !== q.value.choix2 && q.value.reponse !== q.value.choix3 && q.value.reponse !== q.value.choix4 " style="color: red">Not the same
+                        </div>  
                     </div>
                   </div>
                   <div class="form-group">
-                      <button type="submit"  (click)="deleteQuestion()" class="btn btn-rounded btn-danger">+
+                      <button type="submit"  (click)="deleteQuestion()" class="btn btn-rounded btn-danger">-
                         
                         Supprimer</button>
                     </div>
@@ -118,7 +120,7 @@
                   </div>
               </div>
               <div class="form-group">
-                <button type="submit" [disabled]="!quizForm?.valid" (click)="ajouterQuiz()" class="btn btn-rounded btn-success">Ajouter</button>
+                <button type="submit" [disabled]="!quizForm?.valid" (click)="ajouterQuiz()" class="btn btn-rounded btn-success"> + Ajouter</button>
               </div>
             </form>
           </div>
