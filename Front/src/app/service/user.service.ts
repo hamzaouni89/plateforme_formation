@@ -20,9 +20,8 @@ export class UserService {
     }
 
     getCoach() {
-        let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-        return this.http.get('http://localhost:3000/users/getCoach', { headers: header })
-            .map(res => res);
+        // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+        return this.http.get('http://localhost:3000/users/getCoach')
     }
 
     createCoach(user) {
@@ -70,7 +69,11 @@ export class UserService {
         return this.http.post('http://localhost:3000/users/updateUser/' + user._id, user, { headers: header })
             .map(res => res);
     }
-
+    updateCoach(user) {
+        let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+        return this.http.post('http://localhost:3000/users/updateCoach/' + user._id, user, { headers: header })
+            .map(res => res);
+    }
     logout() {
 
         localStorage.removeItem('email');

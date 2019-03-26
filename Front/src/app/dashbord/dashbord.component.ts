@@ -13,18 +13,11 @@ export class DashbordComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit() {
-    this.getCoach();
 
   }
 
 
 
-  getCoach() {
-    this.userService.getCoach().subscribe((res) => {
-      console.log(res)
-      this.Coachs = res;
-    })
-  }
 
 
 }

@@ -209,6 +209,51 @@ router.post('/addCandidats/:id', function (req, res, next) {
 
 
 
+
+
+router.post('/updateCoach/:id', function (req, res, next) {
+    var id = req.params.id
+    Coachs.findByIdAndUpdate({
+        "_id": id
+    }, {
+            $set: {
+                nom: req.body.nom,
+                prenom: req.body.prenom,
+                // email: req.body.email,
+                tel: req.body.tel,
+                niveau: req.body.niveau,
+            }
+        }).exec(function (err, user) {
+            if (err) {
+                res.send(err)
+
+            } else {
+
+
+                User.findById(id).exec(function (err, user) {
+
+                    const token = jwt.sign({
+                        _id: user._id,
+                        email: user.email,
+                        nom: user.nom,
+                        prenom: user.prenom,
+                        tel: req.body.tel,
+                        niveau: req.body.niveau,
+
+                    },
+                        JWT_SIGN_SECRET, {
+                            expiresIn: '1h'
+                        });
+                    res.status(200).send({
+                        Message: 'Update token ',
+                        token: token,
+                    })
+                })
+            }
+        })
+})
+
+
 router.post('/updateUser/:id', function (req, res, next) {
     var id = req.params.id
     Candidats.findByIdAndUpdate({
