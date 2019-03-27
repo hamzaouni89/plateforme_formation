@@ -11,7 +11,7 @@ var coursSchema = new mongoose.Schema({
         default: 'HTML5'
       },
     date : String,
-   // owner : { type: mongoose.Schema.Types.ObjectId, ref: 'Coachs' }
+   owner : { type: mongoose.Schema.Types.ObjectId, ref: 'Coachs' }
   
 })
 module.exports = mongoose.model('Cours', coursSchema)
