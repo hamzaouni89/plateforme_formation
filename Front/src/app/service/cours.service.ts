@@ -14,44 +14,43 @@ export class CoursService {
     
    }
 
-   getImage(image) {
-    let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-    return this.http.get('http://localhost:3000/cours/getImage/' + image, { headers: header })
-      .map(res => res);
+   getContenue(cours) {
+   // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+    return this.http.get('http://localhost:3000/cours/getContenue/' + cours)
+     
   }
 
-  uploadImage(file) {
-    let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-    header.append('Content-Type', 'application/json')
-    return this.http.post('http://localhost:3000/cours/upload', file, { headers: header })
-      .map(res => res);
+  uploadContenue(file) {
+    //let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+    //header.append('Content-Type', 'application/json')
+    return this.http.post('http://localhost:3000/cours/upload', file)
+     
   }
   getCours() {
-    let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-
-    return this.http.get('http://localhost:3000/cours/getCours', { headers: header })
-      .map(res => res);
+    //let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+    return this.http.get('http://localhost:3000/cours/getCours')
+      
   }
   getCoursById(IdUser) {
-    let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-    return this.http.get('http://localhost:3000/cours/getCours' + IdUser, { headers: header })
-      .map(res => res);
+    //let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+    return this.http.get('http://localhost:3000/cours/getCours' + IdUser)
+     
   }
 
   createCours(cours) {
-    let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-    header.append('Content-Type', 'application/json')
-    return this.http.post('http://localhost:3000/cours/addCours', cours, { headers: header })
-      .map(res => res);
+   // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+    //header.append('Content-Type', 'application/json')
+    return this.http.post('http://localhost:3000/cours/addCours', cours)
+      
   }
-  deleteArticle(cours) {
-    let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-    return this.http.get('http://localhost:3000/cours/deleteCours/' + cours._id, { headers: header });
+  deleteCours(cours) {
+   // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+    return this.http.get('http://localhost:3000/cours/deleteCours/' + cours._id);
   }
 
-  updateArticle(cours) {
-    let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-    return this.http.post('http://localhost:3000/cours/updateCours/' + cours._id, cours, { headers: header })
-      .map(res => res);
+  updateCours(cours) {
+   // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+    return this.http.post('http://localhost:3000/cours/updateCours/' + cours._id, cours)
+      
   }
 }

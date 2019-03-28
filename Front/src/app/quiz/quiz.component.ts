@@ -111,7 +111,6 @@ export class QuizComponent implements OnInit {
     });
     console.log(test.questions)
     this.getQuestion(test.questions);
-
   }
 
   getQuizzArrayForm(questions): FormGroup {
