@@ -7,7 +7,7 @@ const storage = multer.diskStorage({
         cb(null, './uploads/');
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname + '-' + Date.now());
+        cb(null, file.originalname );
     }
 });
 
@@ -22,13 +22,14 @@ router.post('/upload', upload.single("contenue"), function (req, res, next) {
 router.get('/getContenue/:name', function (req, res, next) {
     res.sendFile('C:/Users/houni/OneDrive/Bureau/Formation/Niveau4/Projet/uploads/' + req.params.name);
 })
-router.post('/addCours/:id', function (req, res, next) {
+router.post('/addCours', function (req, res, next) {
     console.log(req.body);
     var cours = new Cours({
         titre: req.body.titre,
+        descreption: req.body.descreption,
         contenue: req.body.contenue,
         type: req.body.type,
-        owner: req.params.id,
+        //owner: req.params.id,
         date: new Date(),
         niveau: req.body.niveau
 
@@ -82,7 +83,7 @@ router.get('/deleteCours/:id', function (req, res, next) {
 router.post('/updateCours/:id', function (req, res, next) {
     console.log(req.body)
     var id = req.params.id
-    Cours.findByIdAndUpdate({ "_id": id }, { $set: { titre: req.body.titre, contenue: req.body.contenue, type: req.body.type, image: req.body.image, date: new Date(), niveau: req.body.niveau} }).exec(function (err, cours) {
+    Cours.findByIdAndUpdate({ "_id": id }, { $set: { titre: req.body.titre, descreption : req.body.descreption,contenue: req.body.contenue, type: req.body.type, image: req.body.image, date: new Date(), niveau: req.body.niveau} }).exec(function (err, cours) {
         if (err) {
             res.send(err)
         }
