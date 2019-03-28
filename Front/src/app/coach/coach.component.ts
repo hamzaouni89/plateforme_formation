@@ -46,7 +46,6 @@ export class CoachComponent implements OnInit {
       _id: new FormControl(coach._id)
     });
     // console.log(this.coachs)
-
   }
   updateCoach(coach) {
     return this.userService.updateCoach(coach).subscribe((res) => {

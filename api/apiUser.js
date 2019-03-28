@@ -220,7 +220,7 @@ router.post('/updateCoach/:id', function (req, res, next) {
             $set: {
                 nom: req.body.nom,
                 prenom: req.body.prenom,
-                // email: req.body.email,
+                email: req.body.email,
                 tel: req.body.tel,
                 niveau: req.body.niveau,
             }
@@ -229,15 +229,12 @@ router.post('/updateCoach/:id', function (req, res, next) {
                 res.send(err)
 
             } else {
-
-
-                User.findById(id).exec(function (err, user) {
-
+                User.findOne({ coach: id }).exec(function (err, user2) {
                     const token = jwt.sign({
-                        _id: user._id,
-                        email: user.email,
-                        nom: user.nom,
-                        prenom: user.prenom,
+                        _id: user2._id,
+                        email: req.body.email,
+                        nom: user2.nom,
+                        prenom: user2.prenom,
                         tel: req.body.tel,
                         niveau: req.body.niveau,
 
@@ -254,7 +251,18 @@ router.post('/updateCoach/:id', function (req, res, next) {
         })
 })
 
+router.get('/deleteCoach/:id', function (req, res, next) {
+    var id = req.params.id
 
+    User.findByIdAndRemove(id).exec(function (err, coach) {
+        if (err) {
+            res.send(err)
+        }
+        else {
+            res.send(coach)
+        }
+    })
+})
 router.post('/updateUser/:id', function (req, res, next) {
     var id = req.params.id
     Candidats.findByIdAndUpdate({
