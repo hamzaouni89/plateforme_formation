@@ -229,15 +229,18 @@ router.post('/updateCoach/:id', function (req, res, next) {
                 res.send(err)
 
             } else {
+                User.findOneAndUpdate({ coach: id }, {
+                    $set: {
+                        email: req.body.email,
+                    }
+                }).exec(function (err, user2) {
+                    res.status(200).send(user2)
+                })
                 User.findOne({ coach: id }).exec(function (err, user2) {
                     const token = jwt.sign({
                         _id: user2._id,
                         email: req.body.email,
-                        nom: user2.nom,
-                        prenom: user2.prenom,
-                        tel: req.body.tel,
-                        niveau: req.body.niveau,
-
+                        coach: user2.coach
                     },
                         JWT_SIGN_SECRET, {
                             expiresIn: '1h'

@@ -1,4 +1,4 @@
-import {Pipe, Component, OnInit } from '@angular/core';
+import { Pipe, Component, OnInit } from '@angular/core';
 import { CoursService } from '../service/cours.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -8,15 +8,16 @@ import { DomSanitizer } from '@angular/platform-browser';
   selector: 'app-cours',
   templateUrl: './cours.component.html',
   styleUrls: ['./cours.component.css']
-}) 
+})
 @Pipe({
   name: 'cours'
 })
 export class CoursComponent implements OnInit {
   coursForm: FormGroup;
   url;
+  selectesCour;
   coursUpdateForm: FormGroup;
-  cours :any;
+  cours: any;
   selectedContenue: File;
   constructor(public coursService: CoursService, public sanitizer: DomSanitizer) {
     this.coursForm = new FormGroup({
@@ -25,7 +26,7 @@ export class CoursComponent implements OnInit {
       contenue: new FormControl(),
       type: new FormControl(),
       niveau: new FormControl(),
-     // owner: new FormControl(),
+      // owner: new FormControl(),
       date: new FormControl()
     });
     this.coursUpdateForm = new FormGroup({
@@ -34,12 +35,13 @@ export class CoursComponent implements OnInit {
       contenue: new FormControl(),
       type: new FormControl(),
       niveau: new FormControl(),
-     // owner: new FormControl(),
+      // owner: new FormControl(),
       date: new FormControl()
     });
-   }
+  }
 
   ngOnInit() {
+    this.selectesCour = { titre: '' }
     this.getCours()
   }
 
@@ -70,7 +72,7 @@ export class CoursComponent implements OnInit {
       this.coursService.uploadContenue(file).subscribe(res => console.log(res))
       console.log(res);
       this.getCours()
-      
+
     });
   }
 
@@ -117,7 +119,8 @@ export class CoursComponent implements OnInit {
 
 
 
-  getUrl(param){
-    this.url =  this.sanitizer.bypassSecurityTrustResourceUrl("http://localhost:3000/cours/getContenue/"+param);
+  getUrl(param) {
+    this.url = this.sanitizer.bypassSecurityTrustResourceUrl("http://localhost:3000/cours/getContenue/" + param.contenue);
+    this.selectesCour = param;
   }
 }

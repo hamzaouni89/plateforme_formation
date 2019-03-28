@@ -181,19 +181,20 @@
                           <a (click)="deleteCours(c)" class="btn btn-rounded btn-secondary"><i
                               class="fas fa-trash"></i></a>
 
-                          <a data-toggle="modal" (click)="getUrl(c.contenue)" data-target="#consulter" class="btn btn-rounded btn-primary"><i
-                              class="fas fa-file-pdf"></i></a>
+                          <a data-toggle="modal" (click)="getUrl(c)" data-target="#consulter"
+                            class="btn btn-rounded btn-primary"><i class="fas fa-file-pdf"></i></a>
                           <div class="modal fade" id="consulter" tabindex="-1" role="dialog"
                             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                               <div class="modal-content">
                                 <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalLongTitle">Cours {{c.titre}}
+                                  <h5 class="modal-title" id="exampleModalLongTitle">Cours {{selectesCour.titre}}
                                   </h5>
-                                  
-                                  <object [data]="url" >
+
+                                  <object [data]="url">
                                   </object>
-                                  <a  href="http://localhost:3000/cours/getContenue/{{c.contenue}}">{{c.titre}}</a>
+                                  <a target="__blank"
+                                    href="http://localhost:3000/cours/getContenue/{{selectesCour.contenue}}">download</a>
 
                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
