@@ -1,0 +1,57 @@
+<div >
+  <h5 class="card-header">Ajouter Cours</h5>
+  <div class="card-body">
+    <form [formGroup]="coursForm">
+      <div class="form-group">
+        <label class="col-form-label" for="titre">Titre</label>
+        <input type="text" formControlName="titre" class="form-control is-invalid">
+        <div *ngIf="coursForm?.controls['titre']?.hasError('required')" style="color: red"> Required titre</div>
+      </div>
+      <div class="form-group">
+        <label class="col-form-label" for="descreption">Descreption</label>
+        <input type="text" formControlName="descreption" class="form-control is-invalid">
+        <div *ngIf="coursForm?.controls['descreption']?.hasError('required')" style="color: red"> Required
+          descreption
+          1</div>
+      </div>
+      <div class="form-group">
+        <label class="col-form-label" for="contenue">Contenue</label>
+        <input type="file" (change)="handleFileInput($event.target.files)" class="form-control is-invalid">
+        <div *ngIf="coursForm?.controls['contenue']?.hasError('required')" style="color: red"> Required
+          descreption
+          1</div>
+      </div>
+      <div class="form-group">
+        <label class="col-form-label" for="type">Type</label>
+        <select formControlName="type" class="form-control is-invalid">
+          <option value="HTML5">HTML5</option>
+          <option value="Bootstrap">Bootstrap</option>
+          <option value="JQuery">JQuery</option>
+          <option value="Angular 7">Angular 7</option>
+          <option value="Node JS">Node JS</option>
+          <option value="J2EE">J2EE</option>
+          <option value="Symfony">Symfony</option>
+        </select>
+        <div *ngIf="coursForm?.controls['type']?.hasError('required')" style="color: red"> Required type</div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-form-label" for="niveau">Niveau</label>
+
+        <select formControlName="niveau" class="form-control is-invalid">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+        <div *ngIf="coursForm?.controls['niveau']?.hasError('required')" style="color: red"> Required niveau</div>
+      </div>
+
+      <div class="form-group">
+        <button type="submit" [disabled]="!coursForm?.valid" (click)="createCours()"
+          class="btn btn-rounded btn-success"> + Ajouter</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -6,30 +6,28 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class QuizService {
-
- 
   constructor(private http: HttpClient) { }
 
   ajouterQuiz(quiz) {
     // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-    return this.http.post('http://localhost:3000/quiz/addQuiz',quiz )
-}
+    return this.http.post('http://localhost:3000/quiz/addQuiz', quiz)
+  }
 
-getQuiz() {
-  //let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-  return this.http.get('http://localhost:3000/quiz/getQuiz' ) 
-}
+  getQuiz() {
+    //let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+    return this.http.get('http://localhost:3000/quiz/getQuiz')
+  }
 
-deleteTest(test) {
-  //let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-  return this.http.get('http://localhost:3000/quiz/deleteTest/' + test._id);
-}
+  deleteTest(test) {
+    //let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+    return this.http.get('http://localhost:3000/quiz/deleteTest/' + test._id);
+  }
 
-updateTest(test, id) {
-  //let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-  return this.http.post('http://localhost:3000/quiz/updateQuiz/' + id, test)
-   
-}
+  updateTest(test, id) {
+    //let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+    return this.http.post('http://localhost:3000/quiz/updateQuiz/' + id, test)
+
+  }
 
 
 }

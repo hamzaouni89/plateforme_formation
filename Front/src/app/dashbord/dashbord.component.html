@@ -176,101 +176,91 @@
                   <span class="badge badge-success">6</span></a>
                 <div id="submenu-1" class="collapse submenu" style="">
                   <ul class="nav flex-column">
-
                     <li class="nav-item">
-                      <a class="nav-link" href="#form">Ajouter Coach</a>
+                      <a class="nav-link" data-target="#addCoach" href="#listCoach">Ajouter un Coach</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Modifier</a>
+                      <a class="nav-link"  href="#listCoach">Liste des Coachs</a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                       <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false"
                         data-target="#submenu-1-1" aria-controls="submenu-1-1">Supprimer</a>
-
-                    </li>
+                    </li> -->
                   </ul>
                 </div>
               </li>
               <li class="nav-item ">
                 <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false"
-                  data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Gestion de
+                  data-target="#submenu-2" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Gestion de
                   Candidats
                   <span class="badge badge-success">6</span></a>
-                <div id="submenu-1" class="collapse submenu" style="">
+                <div id="submenu-2" class="collapse submenu" style="">
                   <ul class="nav flex-column">
-
+                    <!-- <li class="nav-item">
+                      <a class="nav-link" href="#">Ajouter un Candidats</a>
+                    </li> -->
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Ajouter </a>
+                      <a class="nav-link" href="#">Liste des Candidats</a>
                     </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#">Modifier</a>
-                    </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                       <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false"
                         data-target="#submenu-1-1" aria-controls="submenu-1-1">Supprimer</a>
-
-                    </li>
+                    </li> -->
                   </ul>
                 </div>
               </li>
               <li class="nav-item ">
                 <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false"
-                  data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Test
+                  data-target="#submenu-3" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Test d'inscreption
                   <span class="badge badge-success">6</span></a>
-                <div id="submenu-1" class="collapse submenu" style="">
+                <div id="submenu-3" class="collapse submenu" style="">
                   <ul class="nav flex-column">
-
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Ajouter </a>
+                      <a class="nav-link" href="#">Ajouter un Test </a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Modifier</a>
+                      <a class="nav-link" href="#">Liste des tests d'increption</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false"
                         data-target="#submenu-1-1" aria-controls="submenu-1-1">Résultat</a>
-
                     </li>
                   </ul>
                 </div>
               </li>
               <li class="nav-item ">
                 <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false"
-                  data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Gestion de
-                  Admin
+                  data-target="#submenu-4" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Gestion
+                  des Admins
                   <span class="badge badge-success">6</span></a>
-                <div id="submenu-1" class="collapse submenu" style="">
+                <div id="submenu-4" class="collapse submenu" style="">
                   <ul class="nav flex-column">
-
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Ajouter </a>
+                      <a class="nav-link" href="#">Ajouter un Admin </a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Modifier</a>
+                      <a class="nav-link" href="#">Liste des Admins</a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                       <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false"
                         data-target="#submenu-1-1" aria-controls="submenu-1-1">Supprimer</a>
-
-                    </li>
+                    </li> -->
                   </ul>
                 </div>
               </li>
-
-
-
-
             </ul>
           </div>
         </nav>
       </div>
     </div>
-
     <div class="dashboard-wrapper">
       <div class="container-fluid  dashboard-content">
         <div class="row">
-          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" id="listCoach">
             <app-coach></app-coach>
+          </div>
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" id="addCoach">
+              <app-candidat></app-candidat>
           </div>
           <!-- ============================================================== -->
           <!-- end basic table  -->

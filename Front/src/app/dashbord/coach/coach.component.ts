@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../service/user.service';
+import { UserService } from '../../service/user.service';
 import { Http } from '@angular/http';
 import { FormGroup, FormControl } from '@angular/forms';
 

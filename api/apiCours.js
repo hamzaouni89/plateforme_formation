@@ -20,7 +20,8 @@ const Cours = require('../model/cours')
 router.post('/upload', upload.single("contenue"), function (req, res, next) {
 })
 router.get('/getContenue/:name', function (req, res, next) {
-    res.sendFile('E:/Projet_Final/uploads/' + req.params.name);
+    res.sendFile('C:/Users/houni/OneDrive/Bureau/Formation/Niveau4/Projet/uploads/' + req.params.name);
+    
 })
 router.post('/addCours', function (req, res, next) {
     console.log(req.body);

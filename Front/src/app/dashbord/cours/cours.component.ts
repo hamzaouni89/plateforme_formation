@@ -1,34 +1,22 @@
-import { Pipe, Component, OnInit } from '@angular/core';
-import { CoursService } from '../service/cours.service';
+import { Component, OnInit } from '@angular/core';
+import { CoursService } from '../../service/cours.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
-
 
 @Component({
   selector: 'app-cours',
   templateUrl: './cours.component.html',
   styleUrls: ['./cours.component.css']
 })
-@Pipe({
-  name: 'cours'
-})
 export class CoursComponent implements OnInit {
   coursForm: FormGroup;
-  url;
-  selectesCour;
+  url: any;
+  selectesCour: any;
   coursUpdateForm: FormGroup;
   cours: any;
   selectedContenue: File;
   constructor(public coursService: CoursService, public sanitizer: DomSanitizer) {
-    this.coursForm = new FormGroup({
-      titre: new FormControl(),
-      descreption: new FormControl(),
-      contenue: new FormControl(),
-      type: new FormControl(),
-      niveau: new FormControl(),
-      // owner: new FormControl(),
-      date: new FormControl()
-    });
+   
     this.coursUpdateForm = new FormGroup({
       titre: new FormControl(),
       descreption: new FormControl(),
@@ -62,19 +50,7 @@ export class CoursComponent implements OnInit {
   handleFileInput(files: FileList) {
     this.selectedContenue = files.item(0);
   }
-  createCours() {
-    console.log(this.coursForm.value)
-    //this.coursForm.value.owner = this.userService.connectedUser._id;
-    this.coursForm.value.contenue = this.selectedContenue.name;
-    this.coursService.createCours(this.coursForm.value).subscribe((res) => {
-      const file = new FormData()
-      file.append("contenue", this.selectedContenue);
-      this.coursService.uploadContenue(file).subscribe(res => console.log(res))
-      console.log(res);
-      this.getCours()
-
-    });
-  }
+  
 
   deleteCours(cours) {
     console.log(cours)
@@ -113,14 +89,13 @@ export class CoursComponent implements OnInit {
     });
   }
 
-
-
-
-
-
-
   getUrl(param) {
     this.url = this.sanitizer.bypassSecurityTrustResourceUrl("http://localhost:3000/cours/getContenue/" + param.contenue);
     this.selectesCour = param;
   }
+
 }
+
+
+
+
