@@ -19,13 +19,17 @@ export class UserService {
         this.connectedUser = this.getDecodedToken();
     }
 
-    getUser(ID) {
-        return this.http.get('http://localhost:3000/users/getuser/ ' + ID);
+    getUser() {
+        return this.http.get('http://localhost:3000/users/getUser/ ');
     }
 
     getCoach() {
         // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
         return this.http.get('http://localhost:3000/users/getCoach')
+    }
+    getUsers(id) {
+        // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+        return this.http.get('http://localhost:3000/users/getUsers/'+ id)
     }
 
     getCandidat() {

@@ -5,6 +5,8 @@ var User = require('../model/users')
 var Candidats = require('../model/candidats')
 var Coachs = require('../model/coachs');
 var router = express.Router();
+var mongoose = require('mongoose');
+var ObjectId = mongoose.Types.ObjectId;
 
 
 const JWT_SIGN_SECRET = 'KJN4511qkqhxq5585x5s85f8f2x8ww8w55x8s52q5w2q2'
@@ -30,6 +32,7 @@ router.post('/addCoach', function (req, res) {
                                     role: "Coach",
                                     password: bcryptedPassword,
                                 });
+                                console.log(newUser);
                                 newUser.save().then(function (newUser) {
                                     res.status(201).send({
                                         'message': "Coach ajoutée",
@@ -113,6 +116,28 @@ router.get('/getCoach', function (req, res, next) {
         }
     })
 })
+
+router.get('/getUser', function (req, res, next) {
+    User.find().populate('owner').exec(function (err, users) {
+        if (err) {
+            res.send(err)
+        } else {
+            res.send(users)
+        }
+    })
+})
+
+router.get('/getUsers/:id', function (req, res, next) {
+    var id = req.params.id
+    User.findOne({'coach' : ObjectId(id)}).exec(function (err, user) {
+        if (err) {
+            res.send(err)
+        } else {
+            res.send(user)
+        }
+    })
+})
+
 
 router.get('/getuser/:id', function (req, res, next) {
     var id = req.params.id
@@ -208,69 +233,92 @@ router.post('/addCandidats/:id', function (req, res, next) {
 })
 
 
-
-
-
 router.post('/updateCoach/:id', function (req, res, next) {
     var id = req.params.id
     Coachs.findByIdAndUpdate({
-        "_id": id
+        "_id": ObjectId(id)
     }, {
         $set: {
             nom: req.body.nom,
             prenom: req.body.prenom,
-            email: req.body.email,
             tel: req.body.tel,
             niveau: req.body.niveau,
         }
     }).exec(function (err, user) {
+        console.log(user);
+        
         if (err) {
             res.send(err)
 
         } else {
+            
             User.findOneAndUpdate({
-                coach: id
+                coach: ObjectId(id)
             }, {
                 $set: {
                     email: req.body.email,
                 }
-            }).exec(function (err, user2) {
-                res.status(200).send(user2)
+            }).exec(function (errr, user2) {
+                console.log(user2)
+                if(errr){
+                    res.send(errr)
+                }
+                else {
+                    res.send(user2)
+                }
             })
-            User.findOne({
-                coach: id
-            }).exec(function (err, user2) {
-                const token = jwt.sign({
-                        _id: user2._id,
-                        email: req.body.email,
-                        coach: user2.coach
-                    },
-                    JWT_SIGN_SECRET, {
-                        expiresIn: '1h'
-                    });
-                res.status(200).send({
-                    Message: 'Update token ',
-                    token: token,
-                })
-            })
+            // User.findOne({
+            //     coach: ObjectId(id)
+            // }).exec(function (err, user2) {
+            //     const token = jwt.sign({
+            //             _id: user2._id,
+            //             email: req.body.email,
+            //             coach: user2.coach
+            //         },
+            //         JWT_SIGN_SECRET, {
+            //             expiresIn: '1h'
+            //         });
+            //     res.status(200).send({
+            //         Message: 'Update token ',
+            //         token: token,
+            //     })
+            // })
         }
     })
 })
 
 router.get('/deleteCoach/:id', function (req, res, next) {
     var id = req.params.id
-    Coachs.findByIdAndRemove(id).exec(function (err) {
+    Coachs.findByIdAndRemove(ObjectId(id)).exec(function (err, coach) {
         if (err) {
             res.send(err)
             console.log(id);
             
         } else {
-            User.findByIdAndRemove(id.coach).exec(function (err, coach) {
+            User.findOneAndRemove({coach : ObjectId(id)} ).exec(function (err, user) {
                 if (err) {
                     res.send(err)
                 } else {
-                    console.log(id , '--', coach);
-                    res.send(coach)
+                    res.send(user)
+                }
+            })
+        }
+    })
+})
+
+router.get('/deleteCandidat/:id', function (req, res, next) {
+    var id = req.params.id
+    Candidats.findByIdAndRemove(ObjectId(id)).exec(function (err) {
+        if (err) {
+            res.send(err)
+            console.log(id);
+            
+        } else {
+            User.findOneAndRemove({candidat : ObjectId(id)} ).exec(function (err, user) {
+                if (err) {
+                    res.send(err)
+                } else {
+                    res.send(user)
                 }
             })
         }

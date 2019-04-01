@@ -25,10 +25,10 @@ export class CandidatComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getcandidat();
+    this.getCandidat();
 
   }
-  getcandidat() {
+  getCandidat() {
     this.userService.getCandidat().subscribe((res) => {
       console.log(res)
       this.candidat = res;
@@ -54,6 +54,13 @@ export class CandidatComponent implements OnInit {
       candidat = res;
       // this.getcandidat();
     });
+  }
+
+  deleteCandidat(candidat) {
+    console.log(candidat)
+    this.userService.deleteCandidat(candidat).subscribe(() => {
+      this.getCandidat();
+    })
   }
 
 }
