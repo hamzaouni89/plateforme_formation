@@ -7,7 +7,7 @@ var candidatsSchema = new mongoose.Schema({
     age : Number,
     niveau : Number,
     tel : Number,
-    etats :  {
+    etat :  {
         type: String,
         enum: ['Accepter', 'En attente' , 'Refuser'],
         default: 'En attente'

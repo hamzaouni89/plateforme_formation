@@ -19,15 +19,23 @@ export class UserService {
         this.connectedUser = this.getDecodedToken();
     }
 
+    getUser(ID) {
+        return this.http.get('http://localhost:3000/users/getuser/ ' + ID);
+    }
+
     getCoach() {
         // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
         return this.http.get('http://localhost:3000/users/getCoach')
     }
 
+    getCandidat() {
+        // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+        return this.http.get('http://localhost:3000/users/getCandidat')
+    }
+
     createCoach(user) {
         // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-        return this.http.post('http://localhost:3000/users/registerCoach', user)
-            .map(res => res);
+        return this.http.post('http://localhost:3000/users/addCoach', user)
     }
 
 
@@ -39,8 +47,14 @@ export class UserService {
 
 
     deleteUser(user) {
-
         return this.http.get('http://localhost:3000/users/deleteUser/' + user.id);
+    }
+    deleteCoach(coach) {
+
+        return this.http.get('http://localhost:3000/users/deleteCoach/' + coach._id);
+    }
+    deleteCandidat(user) {
+        return this.http.get('http://localhost:3000/users/deleteCandidat/' + user.id);
     }
 
     getToken(): string {
@@ -53,15 +67,9 @@ export class UserService {
 
     getDecodedToken() {
         if (localStorage.getItem('token')) {
-
             var decoded = jwt_decode(localStorage.getItem('token'));
             return decoded;
         }
-
-    }
-
-    getUser(ID) {
-        return this.http.get('http://localhost:3000/users/getuser/ ' + ID);
     }
 
     UpdateUser(user) {
@@ -70,10 +78,15 @@ export class UserService {
             .map(res => res);
     }
     updateCoach(user) {
-        let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-        return this.http.post('http://localhost:3000/users/updateCoach/' + user._id, user, { headers: header })
+       // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+        return this.http.post('http://localhost:3000/users/updateCoach/' + user._id, user)
             .map(res => res);
     }
+    updateCandidat(user) {
+        // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+         return this.http.post('http://localhost:3000/users/updateCandidat/' + user._id, user)
+             .map(res => res);
+     }
     logout() {
 
         localStorage.removeItem('email');

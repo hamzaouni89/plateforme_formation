@@ -177,10 +177,10 @@
                 <div id="submenu-1" class="collapse submenu" style="">
                   <ul class="nav flex-column">
                     <li class="nav-item">
-                      <a class="nav-link" data-target="#addCoach" href="#listCoach">Ajouter un Coach</a>
+                      <a class="nav-link"  routerLink="addcoach" >Ajouter un Coach</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link"  href="#listCoach">Liste des Coachs</a>
+                      <a class="nav-link" routerLink="coach" >Liste des Coachs</a>
                     </li>
                     <!-- <li class="nav-item">
                       <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false"
@@ -200,7 +200,7 @@
                       <a class="nav-link" href="#">Ajouter un Candidats</a>
                     </li> -->
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Liste des Candidats</a>
+                      <a class="nav-link" routerLink="candidat">Liste des Candidats</a>
                     </li>
                     <!-- <li class="nav-item">
                       <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false"
@@ -216,10 +216,10 @@
                 <div id="submenu-3" class="collapse submenu" style="">
                   <ul class="nav flex-column">
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Ajouter un Test </a>
+                      <a class="nav-link" routerLink="addtest">Ajouter un Test </a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Liste des tests d'increption</a>
+                      <a class="nav-link" routerLink="test">Liste des tests d'increption</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false"
@@ -254,17 +254,11 @@
       </div>
     </div>
     <div class="dashboard-wrapper">
-      <div class="container-fluid  dashboard-content">
+      <div class="container-fluid dashboard-content">
         <div class="row">
-          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" id="listCoach">
-            <app-coach></app-coach>
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <router-outlet></router-outlet>
           </div>
-          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" id="addCoach">
-              <app-candidat></app-candidat>
-          </div>
-          <!-- ============================================================== -->
-          <!-- end basic table  -->
-          <!-- ============================================================== -->
         </div>
 
       </div>

@@ -54,4 +54,11 @@ export class CoachComponent implements OnInit {
       // this.getCoach();
     });
   }
+
+  deleteCoach(coach) {
+    console.log(coach)
+    this.userService.deleteCoach(coach).subscribe(() => {
+      this.getCoach();
+    })
+  }
 }

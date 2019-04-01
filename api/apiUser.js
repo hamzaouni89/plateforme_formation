@@ -9,10 +9,10 @@ var router = express.Router();
 
 const JWT_SIGN_SECRET = 'KJN4511qkqhxq5585x5s85f8f2x8ww8w55x8s52q5w2q2'
 
-router.post('/registerCoach', function (req, res) {
+router.post('/addCoach', function (req, res) {
     Coachs.findOne({
-        email: req.body.email
-    })
+            email: req.body.email
+        })
         .then(function (userfound) {
             if (!userfound) {
                 bcrypt.hash(req.body.password, 10, function (err, bcryptedPassword) {
@@ -23,21 +23,21 @@ router.post('/registerCoach', function (req, res) {
                         niveau: req.body.niveau,
                     });
                     newCoach.save().then(function () {
-                        Coachs.findById(newCoach._id).exec(function (err, coach) {
-                            var newUser = new User({
-                                email: req.body.email,
-                                coach: coach._id,
-                                role: "Coach",
-                                password: bcryptedPassword,
-                            });
-                            newUser.save().then(function (newUser) {
-                                res.status(201).send({
-                                    'message': "Coach ajoutée",
-                                    '_id': newUser._id
+                            Coachs.findById(newCoach._id).exec(function (err, coach) {
+                                var newUser = new User({
+                                    email: req.body.email,
+                                    coach: coach._id,
+                                    role: "Coach",
+                                    password: bcryptedPassword,
+                                });
+                                newUser.save().then(function (newUser) {
+                                    res.status(201).send({
+                                        'message': "Coach ajoutée",
+                                        '_id': newUser._id
+                                    })
                                 })
                             })
                         })
-                    })
                         .catch(function (err) {
                             res.status(500).send(err)
                         })
@@ -57,8 +57,8 @@ router.post('/registerCoach', function (req, res) {
 
 router.post('/registerCandidat', function (req, res) {
     Candidats.findOne({
-        email: req.body.email
-    })
+            email: req.body.email
+        })
         .then(function (userfound) {
             if (!userfound) {
                 bcrypt.hash(req.body.password, 10, function (err, bcryptedPassword) {
@@ -72,22 +72,22 @@ router.post('/registerCandidat', function (req, res) {
                         status: req.body.status
                     });
                     newCandidat.save().then(function () {
-                        Candidats.findById(newCandidat._id).exec(function (err, cand) {
-                            console.log(cand)
-                            var newUser = new User({
-                                email: req.body.email,
-                                candidat: cand._id,
-                                password: bcryptedPassword,
-                            });
-                            newUser.save().then(function (newUser) {
-                                res.status(201).send({
-                                    'message': "Candidat ajoutée",
-                                    '_id': newUser._id
+                            Candidats.findById(newCandidat._id).exec(function (err, cand) {
+                                console.log(cand)
+                                var newUser = new User({
+                                    email: req.body.email,
+                                    candidat: cand._id,
+                                    password: bcryptedPassword,
+                                });
+                                newUser.save().then(function (newUser) {
+                                    res.status(201).send({
+                                        'message': "Candidat ajoutée",
+                                        '_id': newUser._id
+                                    })
+                                    console.log("ok");
                                 })
-                                console.log("ok");
                             })
                         })
-                    })
                         .catch(function (err) {
                             res.status(500).send(err)
                         })
@@ -108,8 +108,7 @@ router.get('/getCoach', function (req, res, next) {
     Coachs.find().populate('owner').exec(function (err, coachs) {
         if (err) {
             res.send(err)
-        }
-        else {
+        } else {
             res.send(coachs)
         }
     })
@@ -142,16 +141,16 @@ router.post('/login', function (req, res) {
                 if (resBycrypt) {
 
                     const token = jwt.sign({
-                        '_id': userfound._id,
-                        'email': userfound.email,
-                        'nom': userfound.nom,
-                        'prenom': userfound.prenom,
-                        'age': userfound.age,
-                        'tel': userfound.tel,
-                        'niveau': userfound.niveau,
-                        'etat': userfound.etat,
-                        'status': userfound.status,
-                    },
+                            '_id': userfound._id,
+                            'email': userfound.email,
+                            'nom': userfound.nom,
+                            'prenom': userfound.prenom,
+                            'age': userfound.age,
+                            'tel': userfound.tel,
+                            'niveau': userfound.niveau,
+                            'etat': userfound.etat,
+                            'status': userfound.status,
+                        },
                         JWT_SIGN_SECRET, {
                             expiresIn: '1h'
                         });
@@ -188,24 +187,24 @@ router.post('/addCandidats/:id', function (req, res, next) {
     Candidats.updateOne({
         "_id": req.params.id
     }, {
-            $set: {
-                nom: req.body.nom,
-                prenom: req.body.prenom,
-                email: req.body.email,
-                password: req.body.password,
-                age: req.body.age,
-                tel: req.body.tel,
-                niveau: req.body.niveau,
-                status: req.body.status,
-                etat: req.body.etat,
-            }
-        }).exec(function (err, user) {
-            if (err) {
-                res.send(err)
-            } else {
-                res.send(user)
-            }
-        })
+        $set: {
+            nom: req.body.nom,
+            prenom: req.body.prenom,
+            email: req.body.email,
+            password: req.body.password,
+            age: req.body.age,
+            tel: req.body.tel,
+            niveau: req.body.niveau,
+            status: req.body.status,
+            etat: req.body.etat,
+        }
+    }).exec(function (err, user) {
+        if (err) {
+            res.send(err)
+        } else {
+            res.send(user)
+        }
+    })
 })
 
 
@@ -217,52 +216,63 @@ router.post('/updateCoach/:id', function (req, res, next) {
     Coachs.findByIdAndUpdate({
         "_id": id
     }, {
-            $set: {
-                nom: req.body.nom,
-                prenom: req.body.prenom,
-                email: req.body.email,
-                tel: req.body.tel,
-                niveau: req.body.niveau,
-            }
-        }).exec(function (err, user) {
-            if (err) {
-                res.send(err)
+        $set: {
+            nom: req.body.nom,
+            prenom: req.body.prenom,
+            email: req.body.email,
+            tel: req.body.tel,
+            niveau: req.body.niveau,
+        }
+    }).exec(function (err, user) {
+        if (err) {
+            res.send(err)
 
-            } else {
-                User.findOneAndUpdate({ coach: id }, {
-                    $set: {
-                        email: req.body.email,
-                    }
-                }).exec(function (err, user2) {
-                    res.status(200).send(user2)
-                })
-                User.findOne({ coach: id }).exec(function (err, user2) {
-                    const token = jwt.sign({
+        } else {
+            User.findOneAndUpdate({
+                coach: id
+            }, {
+                $set: {
+                    email: req.body.email,
+                }
+            }).exec(function (err, user2) {
+                res.status(200).send(user2)
+            })
+            User.findOne({
+                coach: id
+            }).exec(function (err, user2) {
+                const token = jwt.sign({
                         _id: user2._id,
                         email: req.body.email,
                         coach: user2.coach
                     },
-                        JWT_SIGN_SECRET, {
-                            expiresIn: '1h'
-                        });
-                    res.status(200).send({
-                        Message: 'Update token ',
-                        token: token,
-                    })
+                    JWT_SIGN_SECRET, {
+                        expiresIn: '1h'
+                    });
+                res.status(200).send({
+                    Message: 'Update token ',
+                    token: token,
                 })
-            }
-        })
+            })
+        }
+    })
 })
 
 router.get('/deleteCoach/:id', function (req, res, next) {
     var id = req.params.id
-
-    User.findByIdAndRemove(id).exec(function (err, coach) {
+    Coachs.findByIdAndRemove(id).exec(function (err) {
         if (err) {
             res.send(err)
-        }
-        else {
-            res.send(coach)
+            console.log(id);
+            
+        } else {
+            User.findByIdAndRemove(id.coach).exec(function (err, coach) {
+                if (err) {
+                    res.send(err)
+                } else {
+                    console.log(id , '--', coach);
+                    res.send(coach)
+                }
+            })
         }
     })
 })
@@ -271,26 +281,26 @@ router.post('/updateUser/:id', function (req, res, next) {
     Candidats.findByIdAndUpdate({
         "_id": id
     }, {
-            $set: {
-                nom: req.body.nom,
-                prenom: req.body.prenom,
-                email: req.body.email,
-                tel: req.body.tel,
-                age: req.body.age,
-                niveau: req.body.niveau,
-                status: req.body.status,
-                etat: req.body.etat,
-            }
-        }).exec(function (err, user) {
-            if (err) {
-                res.send(err)
+        $set: {
+            nom: req.body.nom,
+            prenom: req.body.prenom,
+            email: req.body.email,
+            tel: req.body.tel,
+            age: req.body.age,
+            niveau: req.body.niveau,
+            status: req.body.status,
+            etat: req.body.etat,
+        }
+    }).exec(function (err, user) {
+        if (err) {
+            res.send(err)
 
-            } else {
+        } else {
 
 
-                User.findById(id).exec(function (err, user) {
+            User.findById(id).exec(function (err, user) {
 
-                    const token = jwt.sign({
+                const token = jwt.sign({
                         _id: user._id,
                         email: user.email,
                         nom: user.nom,
@@ -302,16 +312,16 @@ router.post('/updateUser/:id', function (req, res, next) {
                         status: req.body.status,
 
                     },
-                        JWT_SIGN_SECRET, {
-                            expiresIn: '1h'
-                        });
-                    res.status(200).send({
-                        Message: 'Update token ',
-                        token: token,
-                    })
+                    JWT_SIGN_SECRET, {
+                        expiresIn: '1h'
+                    });
+                res.status(200).send({
+                    Message: 'Update token ',
+                    token: token,
                 })
-            }
-        })
+            })
+        }
+    })
 })
 
 module.exports = router;

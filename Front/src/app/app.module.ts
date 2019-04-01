@@ -7,7 +7,7 @@ import { FooterComponent } from './footer/footer.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { TestComponent } from './dashbord/test/test.component';
-import { CoursComponent } from './dashbord/cours/cours.component';
+import { CoursComponent } from './cours/cours.component';
 import { ProfilComponent } from './profil/profil.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -16,10 +16,10 @@ import { HttpModule } from '@angular/http';
 import { DashbordComponent } from './dashbord/dashbord.component';
 import { CoachComponent } from './dashbord/coach/coach.component';
 import { CandidatComponent } from './dashbord/candidat/candidat.component';
-import { AddcoachComponent } from './dashbord/coach/addcoach/addcoach.component';
+import { AddcoachComponent } from './dashbord/addcoach/addcoach.component';
 import { AddCandidatComponent } from './dashbord/candidat/addcandidat/addcandidat.component';
-import { AddtestComponent } from './dashbord/test/addtest/addtest.component';
-import { AddcoursComponent } from './dashbord/cours/addcours/addcours.component';
+import { AddtestComponent } from './dashbord/addtest/addtest.component';
+import { AddcoursComponent } from './dashbord/addcours/addcours.component';
 
 @NgModule({
   declarations: [

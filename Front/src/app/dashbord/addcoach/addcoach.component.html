@@ -1,0 +1,59 @@
+<div >
+  <h5 class="card-header">Ajouter Coach</h5>
+  <div class="card-body">
+    <form [formGroup]="coachForm">
+      <div class="form-group">
+        <label class="col-form-label" for="nom">Nom</label>
+        <input type="text" formControlName="nom" class="form-control is-invalid  is-valid " required>
+        <div *ngIf="coachForm?.controls['nom']?.hasError('required')" class="invalid-feedback " > Required nom</div>
+        <div *ngIf="!coachForm?.controls['nom']?.hasError('required')" class="valid-feedback"> Looks good!</div>
+     
+      </div>
+      <div class="form-group">
+        <label class="col-form-label" for="prenom">Prenom</label>
+        <input type="text" formControlName="prenom" class="form-control is-invalid">
+        <div *ngIf="coachForm?.controls['prenom']?.hasError('required')" style="color: red"> Required prenom </div>
+      </div>  
+      <div class="form-group">
+        <label class="col-form-label" for="email">Email</label>
+        <input type="text" formControlName="email" class="form-control is-invalid">
+        <div *ngIf="coachForm?.controls['email']?.hasError('required')" style="color: red"> Required email</div>
+      </div>
+      <div class="form-group">
+        <label class="col-form-label" for="password">Password</label>
+        <input type="password" formControlName="password" class="form-control is-invalid">
+        <div *ngIf="coachForm?.controls['password']?.hasError('required')" style="color: red"> Required password </div>
+      </div>   
+      <div class="form-group">
+        <label class="col-form-label"  for="password2">Confirm Password</label>
+        <input type="password" validateEqual="password" formControlName="password2" class="form-control is-invalid" />
+        <div *ngIf="coachForm?.controls['password2']?.hasError('required')" style="color: red">Required Confirm
+          password</div>
+        <div *ngIf="coachForm.value.password !== coachForm.value.password2" style="color: red">Not the same
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-form-label" for="tel">Num Tel</label>
+        <input type="number" formControlName="tel" class="form-control is-invalid">
+        <div *ngIf="coachForm?.controls['tel']?.hasError('required')" style="color: red"> Required Tel</div>
+      </div>
+      <div class="form-group">
+        <label class="col-form-label" for="niveau">Niveau</label>
+
+        <select formControlName="niveau" class="form-control is-invalid">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+        <div *ngIf="coachForm?.controls['niveau']?.hasError('required')" style="color: red"> Required niveau</div>
+      </div>
+      
+      <div class="form-group">
+        <button type="submit" [disabled]="!coachForm.valid" (click)="createCoach()"
+          class="btn btn-rounded btn-success"> + Ajouter</button>
+      </div>
+    </form>
+  </div>
+</div>
