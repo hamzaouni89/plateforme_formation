@@ -12,6 +12,7 @@ export class CandidatComponent implements OnInit {
   users :  any;
   mail : any;
   ModiFormCandidats: FormGroup;
+  MailForm : FormGroup;
   constructor(private userService: UserService) { 
 
     this.userService.getUser().subscribe(res => {
@@ -31,6 +32,18 @@ export class CandidatComponent implements OnInit {
       status: new FormControl(),
       owner: new FormControl(),
     });
+    this.MailForm = new FormGroup({
+      nom: new FormControl(),
+      prenom: new FormControl(),
+      tel: new FormControl(),
+      message: new FormControl(),
+      email: new FormControl(),
+      subject :new FormControl(), 
+      password : new FormControl(),
+      nomCandidat: new FormControl(),
+      prenomCandidat: new FormControl(),
+      emailCandidat: new FormControl(),
+    })
 
   }
 
@@ -100,6 +113,30 @@ export class CandidatComponent implements OnInit {
   deleteCandidat(candidat) {
     console.log(candidat)
     this.userService.deleteCandidat(candidat).subscribe(() => {
+      this.getCandidat();
+    })
+  }
+  sendMail(candidat) {
+    this.userService.getCandidatByUser(candidat._id).subscribe(res => {
+      let email = res['email'];
+
+    this.MailForm = new FormGroup({
+      nom: new FormControl(),
+      prenom: new FormControl(),
+      email: new FormControl(),
+      tel: new FormControl(),    
+      message: new FormControl(), 
+      subject : new FormControl(),  
+      password :new FormControl(),   
+      nomCandidat: new FormControl({value: candidat.nom , disabled: false}),
+      prenomCandidat: new FormControl({value: candidat.prenom , disabled: true}),
+      emailCandidat: new FormControl({value:email , disabled: true}),
+      _id: new FormControl(candidat._id)
+    });
+   })
+  }
+  enoyerMail(candidat){ 
+    this.userService.envoyerMail(candidat).subscribe(() => {
       this.getCandidat();
     })
   }

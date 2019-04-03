@@ -47,7 +47,6 @@ export class UserService {
 
 
     loginUser(user) {
-
         return this.http.post('http://localhost:3000/users/login', user)
             .map((res: any) => res);
     }
@@ -100,8 +99,11 @@ export class UserService {
              .map(res => res);
      }
     logout() {
-
         localStorage.removeItem('email');
         this.router.navigate(['/']);
     }
+    envoyerMail(candidat){
+        return this.http.post('http://localhost:3000/users/sendMail/'+ candidat._id, candidat )
+    }
+
 }

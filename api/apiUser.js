@@ -6,6 +6,7 @@ var Candidats = require('../model/candidats')
 var Coachs = require('../model/coachs');
 var router = express.Router();
 var mongoose = require('mongoose');
+const nodemailer = require('nodemailer');
 var ObjectId = mongoose.Types.ObjectId;
 
 
@@ -138,7 +139,9 @@ router.get('/getUser', function (req, res, next) {
 
 router.get('/getCoachByUser/:id', function (req, res, next) {
     var id = req.params.id
-    User.findOne({'coach' : ObjectId(id)}).exec(function (err, user) {
+    User.findOne({
+        'coach': ObjectId(id)
+    }).exec(function (err, user) {
         if (err) {
             res.send(err)
         } else {
@@ -149,7 +152,9 @@ router.get('/getCoachByUser/:id', function (req, res, next) {
 
 router.get('/getCandidatByUser/:id', function (req, res, next) {
     var id = req.params.id
-    User.findOne({'candidat' : ObjectId(id)}).exec(function (err, user) {
+    User.findOne({
+        'candidat': ObjectId(id)
+    }).exec(function (err, user) {
         if (err) {
             res.send(err)
         } else {
@@ -264,12 +269,12 @@ router.post('/updateCoach/:id', function (req, res, next) {
         }
     }).exec(function (err, user) {
         console.log(user);
-        
+
         if (err) {
             res.send(err)
 
         } else {
-            
+
             User.findOneAndUpdate({
                 coach: ObjectId(id)
             }, {
@@ -278,10 +283,9 @@ router.post('/updateCoach/:id', function (req, res, next) {
                 }
             }).exec(function (errr, user2) {
                 console.log(user2)
-                if(errr){
+                if (errr) {
                     res.send(errr)
-                }
-                else {
+                } else {
                     res.send(user2)
                 }
             })
@@ -311,9 +315,11 @@ router.get('/deleteCoach/:id', function (req, res, next) {
         if (err) {
             res.send(err)
             console.log(id);
-            
+
         } else {
-            User.findOneAndRemove({coach : ObjectId(id)} ).exec(function (err, user) {
+            User.findOneAndRemove({
+                coach: ObjectId(id)
+            }).exec(function (err, user) {
                 if (err) {
                     res.send(err)
                 } else {
@@ -330,9 +336,11 @@ router.get('/deleteCandidat/:id', function (req, res, next) {
         if (err) {
             res.send(err)
             console.log(id);
-            
+
         } else {
-            User.findOneAndRemove({candidat : ObjectId(id)} ).exec(function (err, user) {
+            User.findOneAndRemove({
+                candidat: ObjectId(id)
+            }).exec(function (err, user) {
                 if (err) {
                     res.send(err)
                 } else {
@@ -369,14 +377,13 @@ router.post('/updateCandidat/:id', function (req, res, next) {
                 }
             }).exec(function (errr, user2) {
                 console.log(user2)
-                if(errr){
+                if (errr) {
                     res.send(errr)
-                }
-                else {
+                } else {
                     res.send(user2)
                 }
             })
-           
+
         }
     })
 })
@@ -394,9 +401,71 @@ router.post('/updateStatuCandidat/:id', function (req, res, next) {
             res.send(err)
         } else {
             res.send(user)
-            }       
+        }
     })
 })
+
+router.get('/', (req, res) => {
+    res.render('contact');
+});
+
+router.post('/sendMail/:id', function (req, res) {
+    var id = req.params.id
+    const output = `
+      <p>You have a new contact request</p>
+      <h3>Contact Details</h3>
+      <ul>  
+        <li>Name: ${req.body.nom} ${req.body.prenom} </li>
+        <li>Email: ${req.body.email}</li>
+        <li>Phone: ${req.body.tel}</li>
+      </ul>
+      <h3>Message</h3>
+      <p>${req.body.message}</p>
+    `;
+
+
+    // create reusable transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        port: 587,
+        secure: false, // true for 465, false for other ports
+        auth: {
+            user: req.body.email, // generated ethereal user
+            pass: req.body.password // generated ethereal password
+        },
+        tls: {
+            rejectUnauthorized: false
+        }
+    });
+
+    User.findOne({
+        candidat: ObjectId(id)
+    }).exec(function (err, user) {
+        if (err) {
+            res.send(err)
+
+        } else {
+            // setup email data with unicode symbols
+            let mailOptions = {
+                from: '"Dev Web Center" <req.body.email>', // sender address
+                to: user.email, // list of receivers
+                subject: req.body.subject, // Subject line
+                text: 'Hello world?', // plain text body
+                html: output // html body
+            };
+
+            // send mail with defined transport object
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    res.send(error);
+                } else {
+                    res.send({'Email sent' :  info.response});
+                }
+            });
+        }
+    })
+
+});
 // router.post('/updateUser/:id', function (req, res, next) {
 //     var id = req.params.id
 //     Candidats.findByIdAndUpdate({
