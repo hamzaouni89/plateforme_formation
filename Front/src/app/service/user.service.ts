@@ -27,11 +27,14 @@ export class UserService {
         // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
         return this.http.get('http://localhost:3000/users/getCoach')
     }
-    getUsers(id) {
+    getCoachByUser(id) {
         // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-        return this.http.get('http://localhost:3000/users/getUsers/'+ id)
+        return this.http.get('http://localhost:3000/users/getCoachByUser/'+ id)
     }
-
+    getCandidatByUser(id){
+         // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+         return this.http.get('http://localhost:3000/users/getCandidatByUser/'+ id)
+    }
     getCandidat() {
         // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
         return this.http.get('http://localhost:3000/users/getCandidat')
@@ -57,8 +60,8 @@ export class UserService {
 
         return this.http.get('http://localhost:3000/users/deleteCoach/' + coach._id);
     }
-    deleteCandidat(user) {
-        return this.http.get('http://localhost:3000/users/deleteCandidat/' + user.id);
+    deleteCandidat(candidat) {
+        return this.http.get('http://localhost:3000/users/deleteCandidat/' + candidat._id);
     }
 
     getToken(): string {
@@ -89,6 +92,11 @@ export class UserService {
     updateCandidat(user) {
         // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
          return this.http.post('http://localhost:3000/users/updateCandidat/' + user._id, user)
+             .map(res => res);
+     }
+     updateStatuCandidat(user) {
+        // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+         return this.http.post('http://localhost:3000/users/updateStatuCandidat/' + user._id, user)
              .map(res => res);
      }
     logout() {

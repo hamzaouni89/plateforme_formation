@@ -1,19 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../service/user.service';
 import { FormGroup, FormControl } from '@angular/forms';
-
 @Component({
-  selector: 'app-candidat',
-  templateUrl: './candidat.component.html',
-  styleUrls: ['./candidat.component.css']
+  selector: 'app-candidats-by-niveau',
+  templateUrl: './candidats-by-niveau.component.html',
+  styleUrls: ['./candidats-by-niveau.component.css']
 })
-export class CandidatComponent implements OnInit {
+export class CandidatsByNiveauComponent implements OnInit {
   candidats: any;
   users :  any;
   mail : any;
   ModiFormCandidats: FormGroup;
   constructor(private userService: UserService) { 
-
     this.userService.getUser().subscribe(res => {
       this.users = res;
     })
@@ -85,23 +83,10 @@ export class CandidatComponent implements OnInit {
     });
   }
 
-  updateStatuCandidat(candidat) {
-    return this.userService.updateStatuCandidat(candidat).subscribe((res) => {
-      console.log(res);
-      this.userService.getCandidat().subscribe(res => {
-        this.candidats = res;
-      })
-      this.userService.getUser().subscribe(res => {
-        this.users = res;
-      })
-    });
-  }
-
   deleteCandidat(candidat) {
     console.log(candidat)
     this.userService.deleteCandidat(candidat).subscribe(() => {
       this.getCandidat();
     })
   }
-
 }

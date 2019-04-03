@@ -117,6 +117,15 @@ router.get('/getCoach', function (req, res, next) {
     })
 })
 
+router.get('/getCandidat', function (req, res, next) {
+    Candidats.find().populate('owner').exec(function (err, candidats) {
+        if (err) {
+            res.send(err)
+        } else {
+            res.send(candidats)
+        }
+    })
+})
 router.get('/getUser', function (req, res, next) {
     User.find().populate('owner').exec(function (err, users) {
         if (err) {
@@ -127,7 +136,7 @@ router.get('/getUser', function (req, res, next) {
     })
 })
 
-router.get('/getUsers/:id', function (req, res, next) {
+router.get('/getCoachByUser/:id', function (req, res, next) {
     var id = req.params.id
     User.findOne({'coach' : ObjectId(id)}).exec(function (err, user) {
         if (err) {
@@ -138,7 +147,16 @@ router.get('/getUsers/:id', function (req, res, next) {
     })
 })
 
-
+router.get('/getCandidatByUser/:id', function (req, res, next) {
+    var id = req.params.id
+    User.findOne({'candidat' : ObjectId(id)}).exec(function (err, user) {
+        if (err) {
+            res.send(err)
+        } else {
+            res.send(user)
+        }
+    })
+})
 router.get('/getuser/:id', function (req, res, next) {
     var id = req.params.id
     Candidats.findById(id).exec(function (err, user) {
@@ -324,15 +342,15 @@ router.get('/deleteCandidat/:id', function (req, res, next) {
         }
     })
 })
-router.post('/updateUser/:id', function (req, res, next) {
+
+router.post('/updateCandidat/:id', function (req, res, next) {
     var id = req.params.id
     Candidats.findByIdAndUpdate({
-        "_id": id
+        "_id": ObjectId(id)
     }, {
         $set: {
             nom: req.body.nom,
             prenom: req.body.prenom,
-            email: req.body.email,
             tel: req.body.tel,
             age: req.body.age,
             niveau: req.body.niveau,
@@ -342,34 +360,89 @@ router.post('/updateUser/:id', function (req, res, next) {
     }).exec(function (err, user) {
         if (err) {
             res.send(err)
-
         } else {
-
-
-            User.findById(id).exec(function (err, user) {
-
-                const token = jwt.sign({
-                        _id: user._id,
-                        email: user.email,
-                        nom: user.nom,
-                        prenom: user.prenom,
-                        age: user.age,
-                        etat: req.body.etat,
-                        tel: req.body.tel,
-                        niveau: req.body.niveau,
-                        status: req.body.status,
-
-                    },
-                    JWT_SIGN_SECRET, {
-                        expiresIn: '1h'
-                    });
-                res.status(200).send({
-                    Message: 'Update token ',
-                    token: token,
-                })
+            User.findOneAndUpdate({
+                candidat: ObjectId(id)
+            }, {
+                $set: {
+                    email: req.body.email,
+                }
+            }).exec(function (errr, user2) {
+                console.log(user2)
+                if(errr){
+                    res.send(errr)
+                }
+                else {
+                    res.send(user2)
+                }
             })
+           
         }
     })
 })
+
+router.post('/updateStatuCandidat/:id', function (req, res, next) {
+    var id = req.params.id
+    Candidats.findByIdAndUpdate({
+        "_id": ObjectId(id)
+    }, {
+        $set: {
+            status: 'Payée',
+        }
+    }).exec(function (err, user) {
+        if (err) {
+            res.send(err)
+        } else {
+            res.send(user)
+            }       
+    })
+})
+// router.post('/updateUser/:id', function (req, res, next) {
+//     var id = req.params.id
+//     Candidats.findByIdAndUpdate({
+//         "_id": id
+//     }, {
+//         $set: {
+//             nom: req.body.nom,
+//             prenom: req.body.prenom,
+//             email: req.body.email,
+//             tel: req.body.tel,
+//             age: req.body.age,
+//             niveau: req.body.niveau,
+//             status: req.body.status,
+//             etat: req.body.etat,
+//         }
+//     }).exec(function (err, user) {
+//         if (err) {
+//             res.send(err)
+
+//         } else {
+
+
+//             User.findById(id).exec(function (err, user) {
+
+//                 const token = jwt.sign({
+//                         _id: user._id,
+//                         email: user.email,
+//                         nom: user.nom,
+//                         prenom: user.prenom,
+//                         age: user.age,
+//                         etat: req.body.etat,
+//                         tel: req.body.tel,
+//                         niveau: req.body.niveau,
+//                         status: req.body.status,
+
+//                     },
+//                     JWT_SIGN_SECRET, {
+//                         expiresIn: '1h'
+//                     });
+//                 res.status(200).send({
+//                     Message: 'Update token ',
+//                     token: token,
+//                 })
+//             })
+//         }
+//     })
+// })
 
 module.exports = router;

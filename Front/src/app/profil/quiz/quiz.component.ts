@@ -1,8 +1,7 @@
 
 
 import { Component, OnInit } from '@angular/core';
-import { Quiz } from '../../../../model/quiz'
-import { QuizService } from '../service/quiz.service';
+import { QuizService } from './../../service/quiz.service';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { Router } from "@angular/router"
 @Component({
@@ -13,19 +12,11 @@ import { Router } from "@angular/router"
 export class QuizComponent implements OnInit {
 
   quiz: any;
-  quizForm: FormGroup;
   quizUpdateForm : FormGroup;
   quizArrayForm: FormArray;
   idTest;
   constructor(public quizService: QuizService, private router: Router) {
-    this.quizForm = new FormGroup({
-      titre: new FormControl('', [Validators.required]),
-      descreption: new FormControl('', [Validators.required]),
-      type: new FormControl('', [Validators.required]),
-      dure: new FormControl('', [Validators.required]),
-      niveau: new FormControl('', [Validators.required]),
-      questions: new FormArray([this.quizzArrayForm()]),
-    });
+   
 
     this.quizUpdateForm = new FormGroup({
       titre: new FormControl('', [Validators.required]),
@@ -38,34 +29,12 @@ export class QuizComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.quizForm = new FormGroup({
-      titre: new FormControl('', [Validators.required]),
-      descreption: new FormControl('', [Validators.required]),
-      type: new FormControl('', [Validators.required]),
-      dure: new FormControl('', [Validators.required]),
-      niveau: new FormControl('', [Validators.required]),
-      questions: new FormArray([this.quizzArrayForm()]),
-    });
     this.getQuiz();
   }
 
-  addQuestion() {
-    let questions = this.quizForm.get('questions') as FormArray
-    questions.push(this.quizzArrayForm());
-  }
-
-  deleteQuestion(i) {
-    let questions = this.quizForm.get('questions') as FormArray
-    questions.removeAt(i);
-  }
   addUpdateQuestion() {
     let questions = this.quizUpdateForm.get('questions') as FormArray
     questions.push(this.quizzArrayForm());
-  }
-
-  deleteUpdateQuestion(i) {
-    let questions = this.quizUpdateForm.get('questions') as FormArray
-    questions.removeAt(i);
   }
   quizzArrayForm(): FormGroup {
     return new FormGroup({
@@ -78,18 +47,9 @@ export class QuizComponent implements OnInit {
     })
   }
 
-  ajouterQuiz() {
-    console.log(this.quizForm.value)
-    this.quizService.ajouterQuiz(this.quizForm.value).subscribe((res) => {
-      console.log(res);
-    });
-  }
-
-  getQuiz() {
-    this.quizService.getQuiz().subscribe((res) => {
-      console.log(res)
-      this.quiz = res;
-    })
+  deleteUpdateQuestion(i) {
+    let questions = this.quizUpdateForm.get('questions') as FormArray
+    questions.removeAt(i);
   }
 
   deleteTest(test) {
@@ -124,12 +84,20 @@ export class QuizComponent implements OnInit {
     })
   }
 
+  
+
   getQuestion(questions) {
     const updateQuestion = this.quizUpdateForm.get('questions') as FormArray
     for (let i=0 ; i<questions.length ; i++){
       updateQuestion.push(this.getQuizzArrayForm(questions[i]));
     }
     
+  }
+  getQuiz() {
+    this.quizService.getQuiz().subscribe((res) => {
+      console.log(res)
+      this.quiz = res;
+    })
   }
 
   updateTest(quiz) {

@@ -53,16 +53,15 @@ export class CoachComponent implements OnInit {
       this.users = res;
     })
   }
-  getUsers(id){
-    
-    this.userService.getUsers(id).subscribe((res) => {
+  getCoachByUser(id){
+    this.userService.getCoachByUser(id).subscribe((res) => {
       console.log(res)
        this.mail = res;
     })
   }
   
   update(coach) {
-    this.userService.getUsers(coach._id).subscribe(res => {
+    this.userService.getCoachByUser(coach._id).subscribe(res => {
       let email = res['email'];
       this.ModiFormCoach = new FormGroup({
         nom: new FormControl(coach.nom),

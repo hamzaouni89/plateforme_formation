@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CoursService } from '../service/cours.service';
+import { CoursService } from '../../service/cours.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 
