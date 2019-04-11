@@ -11,7 +11,8 @@ var testSchema = new mongoose.Schema({
         enum: ['HTML5', 'Bootstrap', 'JQuery', 'Node JS', 'Angular 7' , 'J2EE', 'Symfony'],
         default: 'HTML5'
       },
-    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'Admin' }
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'Admin' },
+    candidat: { type: mongoose.Schema.Types.ObjectId, ref: 'Candidats' }
 
 })
 module.exports = mongoose.model('Test', testSchema)

@@ -1,12 +1,9 @@
 var express = require('express')
 var router = express.Router();
 var Test = require('../model/test')
-var authenAdmin = require('./auth').authenAdmin;
-var authenCoach = require('./auth').authenCoach;
-var authentification = require('./auth').authentification;
+var passport = require('passport');
 
-
-router.post('/addTest', function (req, res, next) {
+router.post('/addTest', passport.authenticate('bearer', { session: false }), function (req, res, next) {
     var test = new Test({
         titre : req.body.titre,
         descreption : req.body.titre,
@@ -23,7 +20,7 @@ router.post('/addTest', function (req, res, next) {
         }
     })
 })
-router.get('/getTest', function (req, res, next) {
+router.get('/getTest', passport.authenticate('bearer', { session: false }), function (req, res, next) {
     Test.find().exec(function (err, test) {
         if (err) {
             res.send(err)
@@ -34,9 +31,9 @@ router.get('/getTest', function (req, res, next) {
     })
 })
 
-router.get('/getTest/:id', function (req, res, next) {
-    var id = req.params.id
-    test.findById(id).exec(function (err, test) {
+router.get('/getTestByNiveau/:niveau', passport.authenticate('bearer', { session: false }), function (req, res, next) {
+    var niveau = req.params.niveau
+    Test.findOne({niveau : niveau}).exec(function (err, test) {
         if (err) {
             res.send(err)
         }
@@ -46,7 +43,7 @@ router.get('/getTest/:id', function (req, res, next) {
     })
 })
 
-router.get('/deleteTest/:id', function (req, res, next) {
+router.get('/deleteTest/:id',passport.authenticate('bearer', { session: false }), function (req, res, next) {
     var id = req.params.id
 
     Test.findByIdAndRemove(id).exec(function (err, Test) {
@@ -60,7 +57,7 @@ router.get('/deleteTest/:id', function (req, res, next) {
 })
 
 
-router.post('/updateTest/:id', function (req, res, next) {
+router.post('/updateTest/:id',passport.authenticate('bearer', { session: false }), function (req, res, next) {
        
     var id = req.params.id
     Test.findByIdAndUpdate({ "_id": id }, { $set: {  titre : req.body.titre,

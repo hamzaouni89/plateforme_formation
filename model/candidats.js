@@ -17,6 +17,8 @@ var candidatsSchema = new mongoose.Schema({
         enum: ['Payée', 'Non Payée'],
         default: 'Non Payée'
       },
+    marks: { type: Number, default: '0' },
+    notes: [{ niveau: Number, note : Number }]
   
 })
 module.exports = mongoose.model('Candidats', candidatsSchema)

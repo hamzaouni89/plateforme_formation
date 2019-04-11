@@ -1,6 +1,7 @@
 var express = require('express')
 var router = express.Router();
 var multer = require('multer');
+var passport = require('passport');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -19,12 +20,11 @@ const Cours = require('../model/cours')
 
 router.post('/upload', upload.single("contenue"), function (req, res, next) {
 })
-router.get('/getContenue/:name', function (req, res, next) {
+router.get('/getContenue/:name',passport.authenticate('bearer', { session: false }), function (req, res, next) {
     res.sendFile('C:/Users/houni/OneDrive/Bureau/Formation/Niveau4/Projet/uploads/' + req.params.name);
     
 })
-router.post('/addCours', function (req, res, next) {
-    console.log(req.body);
+router.post('/addCours',passport.authenticate('bearer', { session: false }), function (req, res, next) {
     var cours = new Cours({
         titre: req.body.titre,
         descreption: req.body.descreption,
@@ -35,7 +35,6 @@ router.post('/addCours', function (req, res, next) {
         niveau: req.body.niveau
 
     });
-    console.log(req.body)
     cours.save(function (err, cours) {
         if (err) {
             res.send(err)
@@ -44,7 +43,7 @@ router.post('/addCours', function (req, res, next) {
         }
     })
 })
-router.get('/getCours', function (req, res, next) {
+router.get('/getCours',passport.authenticate('bearer', { session: false }), function (req, res, next) {
     Cours.find().populate('owner').exec(function (err, cours) {
         if (err) {
             res.send(err)
@@ -55,7 +54,7 @@ router.get('/getCours', function (req, res, next) {
     })
 })
 
-router.get('/getCours/:id', function (req, res, next) {
+router.get('/getCours/:id', passport.authenticate('bearer', { session: false }),function (req, res, next) {
     var id = req.params.id
     Cours.findById(id).exec(function (err, cours) {
         if (err) {
@@ -68,7 +67,7 @@ router.get('/getCours/:id', function (req, res, next) {
 })
 
 
-router.get('/deleteCours/:id', function (req, res, next) {
+router.get('/deleteCours/:id',passport.authenticate('bearer', { session: false }), function (req, res, next) {
     var id = req.params.id
 
     Cours.findByIdAndRemove(id).exec(function (err, cours) {
@@ -81,8 +80,7 @@ router.get('/deleteCours/:id', function (req, res, next) {
     })
 })
 
-router.post('/updateCours/:id', function (req, res, next) {
-    console.log(req.body)
+router.post('/updateCours/:id',passport.authenticate('bearer', { session: false }), function (req, res, next) {
     var id = req.params.id
     Cours.findByIdAndUpdate({ "_id": id }, { $set: { titre: req.body.titre, descreption: req.body.descreption, contenue: req.body.contenue, type: req.body.type, image: req.body.image, date: new Date(), niveau: req.body.niveau } }).exec(function (err, cours) {
         if (err) {

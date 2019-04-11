@@ -1,0 +1,67 @@
+<div class="container py-5">
+  <div class="row">
+    <div class="col-6">
+      <h3>{{tests?.titre}}</h3>
+    </div>
+    <div class="col-6 text-right">
+      <h3>Niveau : {{tests?.niveau}}</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 text-center">
+      <h2 class="font-weight-normal">{{tests?.descreption}}</h2>
+    </div>
+  </div>
+  <hr/>
+  <div class="col-md-12">
+    <ng-container  [counter]="tests?.dure*60" [interval]="interval" (value)="value = $event;timeDone = $event;">
+      <h1  style="width: 100%; text-align: center; margin: auto;">{{ convertMinsToHrsMinsSecs(value) }}</h1>
+    </ng-container>
+
+    <div class="badge badge-info">Question {{index + 1}} of {{tests?.questions.length}}</div>
+    <hr />
+    <div *ngIf="timeDone !== 0">
+
+      <h3 class="font-weight-normal">{{index + 1}}.
+        <span [innerHTML]="tests?.questions[index].question"></span>
+      </h3>
+      <label class="custom-control custom-radio font-weight-normal ">
+        <h4><input type="radio" name="radio-inline" class="custom-control-input" [disabled]="!isTimeUp" name="question"
+            (change)="onSelect(tests?.questions[index]._id, tests?.questions[index].choix1);"
+            value="{{ tests?.questions[index].choix1 }}"><span
+            class="custom-control-label">{{ tests?.questions[index].choix1 }}</span></h4>
+      </label>
+      <label class="custom-control custom-radio font-weight-normal ">
+        <h4><input type="radio" name="radio-inline" class="custom-control-input" [disabled]="!isTimeUp" name="question"
+            (change)="onSelect(tests?.questions[index]._id, tests?.questions[index].choix2);"
+            value="{{ tests?.questions[index].choix2 }}"><span
+            class="custom-control-label">{{ tests?.questions[index].choix2 }}</span></h4>
+      </label>
+      <label class="custom-control custom-radio font-weight-normal">
+        <h4><input type="radio" name="radio-inline" class="custom-control-input" [disabled]="!isTimeUp" name="question"
+            (change)="onSelect(tests?.questions[index]._id, tests?.questions[index].choix3);"
+            value="{{ tests?.questions[index].choix3 }}"><span
+            class="custom-control-label">{{ tests?.questions[index].choix3 }}</span></h4>
+      </label>
+      <label class="custom-control custom-radio font-weight-normal">
+        <h4><input type="radio" name="radio-inline" class="custom-control-input" [disabled]="!isTimeUp" name="question"
+            (change)="onSelect(tests?.questions[index]._id, tests?.questions[index].choix4);"
+            value="{{ tests?.questions[index].choix4 }}"><span
+            class="custom-control-label">{{ tests?.questions[index].choix4 }}</span></h4>
+      </label>
+    </div>
+    <hr />
+    <div class="text-center">
+      <button class="btn btn-default" (click)="goTo(0);">First</button>
+      <button class="btn btn-default" (click)="goTo(index - 1);">Prev</button>
+      <button class="btn btn-primary" *ngIf="tests?.questions.length !=index+1" (click)="goTo(index + 1);">Next</button>
+      <button class="btn btn-primary" *ngIf="tests?.questions.length ==index+1" (click)="getMark();">Submit
+        Test</button>
+      <button class="btn btn-default" (click)="goTo(tests?.questions.length - 1);">Last</button>
+
+      <!--<pagination *ngIf="config.showPager" direction-links="false" total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" ng-change="pageChanged()"></pagination>-->
+    </div>
+    <!-- <button mat-stroked-button type="submit" (click)="onSubmit()"
+        style="width: 100%; text-align: center; font-size: 30px;" color="accent">next</button> -->
+  </div>
+</div>

@@ -4,6 +4,8 @@ var jwt = require('jsonwebtoken')
 var User = require('../model/users')
 var Candidats = require('../model/candidats')
 var Coachs = require('../model/coachs');
+var Admin = require('../model/admin');
+var passport = require('passport');
 var router = express.Router();
 var mongoose = require('mongoose');
 const nodemailer = require('nodemailer');
@@ -12,7 +14,7 @@ var ObjectId = mongoose.Types.ObjectId;
 
 const JWT_SIGN_SECRET = 'KJN4511qkqhxq5585x5s85f8f2x8ww8w55x8s52q5w2q2'
 
-router.post('/addCoach', function (req, res) {
+router.post('/addCoach', passport.authenticate('bearer', { session: false }), function (req, res) {
     Coachs.findOne({
             email: req.body.email
         })
@@ -33,7 +35,6 @@ router.post('/addCoach', function (req, res) {
                                     role: "Coach",
                                     password: bcryptedPassword,
                                 });
-                                console.log(newUser);
                                 newUser.save().then(function (newUser) {
                                     res.status(201).send({
                                         'message': "Coach ajoutée",
@@ -58,37 +59,31 @@ router.post('/addCoach', function (req, res) {
             })
         });
 })
-
-router.post('/registerCandidat', function (req, res) {
-    Candidats.findOne({
+router.post('/addAdmin',passport.authenticate('bearer', { session: false }), function (req, res) {
+    Admin.findOne({
             email: req.body.email
         })
         .then(function (userfound) {
             if (!userfound) {
                 bcrypt.hash(req.body.password, 10, function (err, bcryptedPassword) {
-                    var newCandidat = new Candidats({
+                    var newAdmin = new Admin({
                         nom: req.body.nom,
                         prenom: req.body.prenom,
-                        tel: req.body.tel,
-                        age: req.body.age,
-                        niveau: req.body.niveau,
-                        etat: req.body.etat,
-                        status: req.body.status
+                        
                     });
-                    newCandidat.save().then(function () {
-                            Candidats.findById(newCandidat._id).exec(function (err, cand) {
-                                console.log(cand)
+                    newAdmin.save().then(function () {
+                            Admin.findById(newAdmin._id).exec(function (err, admin) {
                                 var newUser = new User({
                                     email: req.body.email,
-                                    candidat: cand._id,
+                                    admin: admin._id,
+                                    role : "Admin",
                                     password: bcryptedPassword,
                                 });
                                 newUser.save().then(function (newUser) {
                                     res.status(201).send({
-                                        'message': "Candidat ajoutée",
+                                        'message': "Admin ajoutée",
                                         '_id': newUser._id
                                     })
-                                    console.log("ok");
                                 })
                             })
                         })
@@ -108,7 +103,54 @@ router.post('/registerCandidat', function (req, res) {
             })
         });
 })
-router.get('/getCoach', function (req, res, next) {
+router.post('/registerCandidat', function (req, res) {
+    Candidats.findOne({
+            email: req.body.email
+        })
+        .then(function (userfound) {
+            if (!userfound) {
+                bcrypt.hash(req.body.password, 10, function (err, bcryptedPassword) {
+                    var newCandidat = new Candidats({
+                        nom: req.body.nom,
+                        prenom: req.body.prenom,
+                        tel: req.body.tel,
+                        age: req.body.age,
+                        niveau: req.body.niveau,
+                        etat: req.body.etat,
+                        status: req.body.status
+                    });
+                    newCandidat.save().then(function () {
+                            Candidats.findById(newCandidat._id).exec(function (err, cand) {
+                                var newUser = new User({
+                                    email: req.body.email,
+                                    candidat: cand._id,
+                                    password: bcryptedPassword,
+                                });
+                                newUser.save().then(function (newUser) {
+                                    res.status(201).send({
+                                        'message': "Candidat ajoutée",
+                                        '_id': newUser._id
+                                    })
+                                })
+                            })
+                        })
+                        .catch(function (err) {
+                            res.status(500).send(err)
+                        })
+                })
+            } else {
+                res.status(409).send({
+                    'error': 'user already exsit'
+                })
+            }
+        })
+        .catch(function (err) {
+            res.status(500).send({
+                'error': 'unable to verify user'
+            })
+        });
+})
+router.get('/getCoach', passport.authenticate('bearer', { session: false }), function (req, res, next) {
     Coachs.find().populate('owner').exec(function (err, coachs) {
         if (err) {
             res.send(err)
@@ -118,7 +160,7 @@ router.get('/getCoach', function (req, res, next) {
     })
 })
 
-router.get('/getCandidat', function (req, res, next) {
+router.get('/getCandidat',passport.authenticate('bearer', { session: false }),  function (req, res, next) {
     Candidats.find().populate('owner').exec(function (err, candidats) {
         if (err) {
             res.send(err)
@@ -127,6 +169,7 @@ router.get('/getCandidat', function (req, res, next) {
         }
     })
 })
+
 router.get('/getUser', function (req, res, next) {
     User.find().populate('owner').exec(function (err, users) {
         if (err) {
@@ -137,7 +180,7 @@ router.get('/getUser', function (req, res, next) {
     })
 })
 
-router.get('/getCoachByUser/:id', function (req, res, next) {
+router.get('/getCoachByUser/:id', passport.authenticate('bearer', { session: false }), function (req, res, next) {
     var id = req.params.id
     User.findOne({
         'coach': ObjectId(id)
@@ -150,7 +193,7 @@ router.get('/getCoachByUser/:id', function (req, res, next) {
     })
 })
 
-router.get('/getCandidatByUser/:id', function (req, res, next) {
+router.get('/getCandidatByUser/:id',passport.authenticate('bearer', { session: false }),  function (req, res, next) {
     var id = req.params.id
     User.findOne({
         'candidat': ObjectId(id)
@@ -173,49 +216,98 @@ router.get('/getuser/:id', function (req, res, next) {
     })
 })
 
-router.post('/login', function (req, res) {
+router.post('/login', function (req, res, next) {
     var password = req.body.password
     var email = req.body.email
     if (password == null || email == null) {
-        res.status(400).send({
+        res.send({
             'error': 'missing parametres'
         })
     }
-    Candidats.findOne({
-        "email": email
+    User.findOne({
+        email: email
     }).exec(function (err, userfound) {
         if (userfound) {
             bcrypt.compare(password, userfound.password, function (err, resBycrypt) {
                 if (resBycrypt) {
-
-                    const token = jwt.sign({
-                            '_id': userfound._id,
-                            'email': userfound.email,
-                            'nom': userfound.nom,
-                            'prenom': userfound.prenom,
-                            'age': userfound.age,
-                            'tel': userfound.tel,
-                            'niveau': userfound.niveau,
-                            'etat': userfound.etat,
-                            'status': userfound.status,
-                        },
-                        JWT_SIGN_SECRET, {
-                            expiresIn: '1h'
-                        });
-                    res.status(200).send({
-                        Message: 'authentification valide',
-                        token: token
-                    })
-
-                } else {
-                    res.status(403).send({
+                    if (userfound.role === "Candidat") {
+                        Candidats.findOne({
+                            _id: userfound.candidat
+                        }).exec(function (err, cand) {
+                            const token = jwt.sign({
+                                '_id': userfound._id,
+                                'email': userfound.email,
+                                'role': userfound.role,
+                                'nom' : cand.nom,
+                                'prenom' : cand.prenom,
+                                'age' : cand.age,
+                                'niveau' : cand.niveau,
+                                'tel' : cand.tel,
+                                'candidat': cand._id
+                            },
+                            JWT_SIGN_SECRET, {
+                                expiresIn: '1h'
+                            });                  
+                        res.send({
+                            Message: 'authentification valide',
+                            token: token
+                        })
+                        })
+                    }
+                    else  if (userfound.role === "Coach") {
+                        Coachs.findOne({
+                            _id: userfound.coach
+                        }).exec(function (err, coach) {
+                            const token = jwt.sign({
+                                '_id': userfound._id,
+                                'email': userfound.email,
+                                'role': userfound.role,
+                                'nom' : coach.nom,
+                                'prenom' : coach.prenom,
+                                'niveau' : coach.niveau,
+                                'tel' : coach.tel,
+                                'coach': coach._id
+                            },
+                            JWT_SIGN_SECRET, {
+                                expiresIn: '1h'
+                            });                  
+                        res.send({
+                            Message: 'authentification valide',
+                            token: token
+                        })
+                        })
+                    }
+                    else  if (userfound.role === "Admin") {
+                        Admin.findOne({
+                            _id: userfound.admin
+                        }).exec(function (err, admin) {
+                            const token = jwt.sign({
+                                '_id': userfound._id,
+                                'email': userfound.email,
+                                'role': userfound.role,
+                                'nom' : admin.nom,
+                                'prenom' : admin.prenom,
+                                'admin':admin._id
+                             },
+                            JWT_SIGN_SECRET, {
+                                expiresIn: '1h'
+                            });                  
+                        res.send({
+                            Message: 'authentification valide',
+                            token: token
+                        })
+                        })
+                    }
+                } 
+                else {
+                    res.send({
                         'error': 'invalid password'
                     })
                 }
 
             });
         } else {
-            res.status(404).send({
+            res.send({
                 'error': 'user not exist in DB'
             })
         }
@@ -224,11 +316,20 @@ router.post('/login', function (req, res) {
 
 });
 
-router.get('/logout', function (req, res) {
-    req.logOut()
+router.get('/logout', isValidUser, function (req, res, next) {
+    req.logout();
     req.session.destroy()
-
+    return res.status(200).send({
+        message: 'Logout Success'
+    });
 })
+
+function isValidUser(req, res, next) {
+    if (req.isAuthenticated()) next();
+    else return res.status(401).send({
+        message: 'Unauthorized Request'
+    });
+}
 
 router.post('/addCandidats/:id', function (req, res, next) {
 
@@ -256,7 +357,7 @@ router.post('/addCandidats/:id', function (req, res, next) {
 })
 
 
-router.post('/updateCoach/:id', function (req, res, next) {
+router.post('/updateCoach/:id',passport.authenticate('bearer', { session: false }), function (req, res, next) {
     var id = req.params.id
     Coachs.findByIdAndUpdate({
         "_id": ObjectId(id)
@@ -268,8 +369,6 @@ router.post('/updateCoach/:id', function (req, res, next) {
             niveau: req.body.niveau,
         }
     }).exec(function (err, user) {
-        console.log(user);
-
         if (err) {
             res.send(err)
 
@@ -282,7 +381,6 @@ router.post('/updateCoach/:id', function (req, res, next) {
                     email: req.body.email,
                 }
             }).exec(function (errr, user2) {
-                console.log(user2)
                 if (errr) {
                     res.send(errr)
                 } else {
@@ -309,13 +407,11 @@ router.post('/updateCoach/:id', function (req, res, next) {
     })
 })
 
-router.get('/deleteCoach/:id', function (req, res, next) {
+router.get('/deleteCoach/:id', passport.authenticate('bearer', { session: false }), function (req, res, next) {
     var id = req.params.id
     Coachs.findByIdAndRemove(ObjectId(id)).exec(function (err, coach) {
         if (err) {
             res.send(err)
-            console.log(id);
-
         } else {
             User.findOneAndRemove({
                 coach: ObjectId(id)
@@ -330,13 +426,11 @@ router.get('/deleteCoach/:id', function (req, res, next) {
     })
 })
 
-router.get('/deleteCandidat/:id', function (req, res, next) {
+router.get('/deleteCandidat/:id',passport.authenticate('bearer', { session: false }), function (req, res, next) {
     var id = req.params.id
     Candidats.findByIdAndRemove(ObjectId(id)).exec(function (err) {
         if (err) {
             res.send(err)
-            console.log(id);
-
         } else {
             User.findOneAndRemove({
                 candidat: ObjectId(id)
@@ -351,7 +445,7 @@ router.get('/deleteCandidat/:id', function (req, res, next) {
     })
 })
 
-router.post('/updateCandidat/:id', function (req, res, next) {
+router.post('/updateCandidat/:id',passport.authenticate('bearer', { session: false }), function (req, res, next) {
     var id = req.params.id
     Candidats.findByIdAndUpdate({
         "_id": ObjectId(id)
@@ -376,7 +470,6 @@ router.post('/updateCandidat/:id', function (req, res, next) {
                     email: req.body.email,
                 }
             }).exec(function (errr, user2) {
-                console.log(user2)
                 if (errr) {
                     res.send(errr)
                 } else {
@@ -388,7 +481,7 @@ router.post('/updateCandidat/:id', function (req, res, next) {
     })
 })
 
-router.post('/updateStatuCandidat/:id', function (req, res, next) {
+router.post('/updateStatuCandidat/:id', passport.authenticate('bearer', { session: false }), function (req, res, next) {
     var id = req.params.id
     Candidats.findByIdAndUpdate({
         "_id": ObjectId(id)
@@ -404,12 +497,48 @@ router.post('/updateStatuCandidat/:id', function (req, res, next) {
         }
     })
 })
+router.post('/sendMarks/:id/:marks', passport.authenticate('bearer', { session: false }), function (req, res, next) {
+    console.log(req.params);
+    console.log("markes:",req.params.marks);
+    
+    Candidats.findByIdAndUpdate({
+        "_id": ObjectId(req.params.id)
+    }, {
+        $set: {
+            marks: req.params.marks,
+        }
+    }).exec(function (err, user) {
+        if (err) {
+            res.send(err)
+        } else {
+            res.send(user)
+        }
+    })
+})
 
-router.get('/', (req, res) => {
-    res.render('contact');
-});
+router.post('/sendNoteByNiveau/:id/:niveau/:note', passport.authenticate('bearer', { session: false }), function (req, res, next) {
 
-router.post('/sendMail/:id', function (req, res) {
+    Candidats.findByIdAndUpdate({
+        "_id": ObjectId(req.params.id)
+    }, {
+        $set: {
+            notes: {niveau : req.params.niveau , note : req.params.note},
+        }
+    }).exec(function (err, user) {
+        if (err) {
+            res.send(err)
+        } else {
+            res.send(user)
+        }
+    })
+})
+
+
+// router.get('/', (req, res) => {
+//     res.render('contact');
+// });
+
+router.post('/sendMail/:id',passport.authenticate('bearer', { session: false }), function (req, res) {
     var id = req.params.id
     const output = `
       <p>You have a new contact request</p>
@@ -459,7 +588,9 @@ router.post('/sendMail/:id', function (req, res) {
                 if (error) {
                     res.send(error);
                 } else {
-                    res.send({'Email sent' :  info.response});
+                    res.send({
+                        'Email sent': info.response
+                    });
                 }
             });
         }

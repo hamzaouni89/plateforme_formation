@@ -13,6 +13,7 @@ var quizSchema = new mongoose.Schema({
         default: 'HTML5'
       },
     coath: { type: mongoose.Schema.Types.ObjectId, ref: 'Coach' } ,
+    candidat: { type: mongoose.Schema.Types.ObjectId, ref: 'Candidats' },
 
 })
 module.exports = mongoose.model('Quiz', quizSchema)

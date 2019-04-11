@@ -20,47 +20,53 @@ export class UserService {
     }
 
     getUser() {
-        return this.http.get('http://localhost:3000/users/getUser/ ');
+        let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+        return this.http.get('http://localhost:3000/users/getUser/ ', { headers: header });
     }
 
     getCoach() {
-        // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-        return this.http.get('http://localhost:3000/users/getCoach')
+     let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+        return this.http.get('http://localhost:3000/users/getCoach', { headers: header })
     }
     getCoachByUser(id) {
-        // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-        return this.http.get('http://localhost:3000/users/getCoachByUser/'+ id)
+         let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+        return this.http.get('http://localhost:3000/users/getCoachByUser/' + id, { headers: header })
     }
-    getCandidatByUser(id){
-         // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-         return this.http.get('http://localhost:3000/users/getCandidatByUser/'+ id)
+    getCandidatByUser(id) {
+        let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+        return this.http.get('http://localhost:3000/users/getCandidatByUser/' + id, { headers: header })
     }
     getCandidat() {
-        // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-        return this.http.get('http://localhost:3000/users/getCandidat')
+        let header = new HttpHeaders().append('Content-Type', 'application/json');
+        return this.http.get('http://localhost:3000/users/getCandidat', { headers: header})
     }
-
     createCoach(user) {
-        // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-        return this.http.post('http://localhost:3000/users/addCoach', user)
+         let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+        return this.http.post('http://localhost:3000/users/addCoach', user, { headers: header })
+    }
+    createCandidat(user) {
+        var header = new HttpHeaders().append('Content-Type', 'application/json');
+        return this.http.post('http://localhost:3000/users/registerCandidat', user, { headers: header})
     }
 
 
     loginUser(user) {
-        return this.http.post('http://localhost:3000/users/login', user)
-            .map((res: any) => res);
+        var header = new HttpHeaders().append('Content-Type', 'application/json');
+        return this.http.post('http://localhost:3000/users/login', user, { headers: header})
     }
 
 
     deleteUser(user) {
-        return this.http.get('http://localhost:3000/users/deleteUser/' + user.id);
+        var header = new HttpHeaders().append('Content-Type', 'application/json');
+        return this.http.get('http://localhost:3000/users/deleteUser/' + user.id, { headers: header});
     }
     deleteCoach(coach) {
-
-        return this.http.get('http://localhost:3000/users/deleteCoach/' + coach._id);
+        var header = new HttpHeaders().append('Content-Type', 'application/json');
+        return this.http.get('http://localhost:3000/users/deleteCoach/' + coach._id, { headers: header});
     }
     deleteCandidat(candidat) {
-        return this.http.get('http://localhost:3000/users/deleteCandidat/' + candidat._id);
+        var header = new HttpHeaders().append('Content-Type', 'application/json');
+        return this.http.get('http://localhost:3000/users/deleteCandidat/' + candidat._id, { headers: header});
     }
 
     getToken(): string {
@@ -84,26 +90,37 @@ export class UserService {
             .map(res => res);
     }
     updateCoach(user) {
-       // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-        return this.http.post('http://localhost:3000/users/updateCoach/' + user._id, user)
+        let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+        return this.http.post('http://localhost:3000/users/updateCoach/' + user._id, user, { headers: header })
             .map(res => res);
     }
     updateCandidat(user) {
-        // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-         return this.http.post('http://localhost:3000/users/updateCandidat/' + user._id, user)
-             .map(res => res);
-     }
-     updateStatuCandidat(user) {
-        // let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-         return this.http.post('http://localhost:3000/users/updateStatuCandidat/' + user._id, user)
-             .map(res => res);
-     }
-    logout() {
-        localStorage.removeItem('email');
-        this.router.navigate(['/']);
+        let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+        return this.http.post('http://localhost:3000/users/updateCandidat/' + user._id, user, { headers: header })
+            .map(res => res);
     }
-    envoyerMail(candidat){
-        return this.http.post('http://localhost:3000/users/sendMail/'+ candidat._id, candidat )
+    updateStatuCandidat(user) {
+         let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+        return this.http.post('http://localhost:3000/users/updateStatuCandidat/' + user._id, user, { headers: header })
+            .map(res => res);
+    }
+    sendMarks(user , marks){
+        console.log( user.candidat , marks);
+        let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+        return this.http.post('http://localhost:3000/users/sendMarks/' + user.candidat + "/"+ marks ,user, { headers: header })
+    }
+    logout() {
+        // localStorage.removeItem('email');
+        // this.router.navigate(['/']);
+        return this.http.get('http://localhost:3000/users/logout', {
+            observe: 'body',
+            withCredentials: true,
+            headers: new HttpHeaders().append('Content-Type', 'application/json')
+        })
+    }
+    envoyerMail(candidat) {
+        let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+        return this.http.post('http://localhost:3000/users/sendMail/' + candidat._id, candidat, { headers: header})
     }
 
 }
