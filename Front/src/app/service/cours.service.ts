@@ -13,7 +13,6 @@ export class CoursService {
   getContenue(cours) {
     let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
     return this.http.get('http://localhost:3000/cours/getContenue/' + cours, { headers: header})
-
   }
 
   uploadContenue(file) {
@@ -25,13 +24,17 @@ export class CoursService {
   getCours() {
     let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
     return this.http.get('http://localhost:3000/cours/getCours', { headers: header})
-
   }
-  getCoursById(IdUser) {
+  getCoursByNiveau(niveau) {
     let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
-    return this.http.get('http://localhost:3000/cours/getCours' + IdUser, { headers: header})
-
+    return this.http.get('http://localhost:3000/cours/getCoursByNiveau/' + niveau, { headers: header})
   }
+  
+
+  validerCours(cours) {
+    let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+   return this.http.post('http://localhost:3000/cours/validerCours/' + cours._id, cours, { headers: header }) 
+}
 
   createCours(cours) {
     let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));

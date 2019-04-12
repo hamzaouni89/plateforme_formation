@@ -12,6 +12,11 @@ var coursSchema = new mongoose.Schema({
         default: 'HTML5'
       },
     date : String,
+    status :  {
+      type: String,
+      enum: ['Valider', 'Non Valider' ],
+      default: 'Non Valider'
+    },
    owner : { type: mongoose.Schema.Types.ObjectId, ref: 'Coachs' }
   
 })

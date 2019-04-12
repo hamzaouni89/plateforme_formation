@@ -29,6 +29,7 @@ import { TestInscriCandidatComponent } from './dashbordCandidat/test-inscri-cand
 import { TestCandidatComponent } from './dashbordCandidat/test-candidat/test-candidat.component';
 import { CounterDirective } from './dashbordCandidat/test-inscri-candidat/counter.directive';
 import { HomeComponent } from './home/home.component';
+
 @NgModule({
   declarations: [
     CounterDirective,

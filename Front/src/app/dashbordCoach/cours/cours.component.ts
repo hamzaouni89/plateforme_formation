@@ -11,7 +11,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class CoursComponent implements OnInit {
   coursForm: FormGroup;
   url: any;
-  selectesCour: any;
+  selectesCour: any; 
   coursUpdateForm: FormGroup;
   cours: any;
   selectedContenue: File;

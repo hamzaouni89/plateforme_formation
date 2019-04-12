@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '../service/user.service';
+import { AuthService } from '../service/auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -13,7 +14,7 @@ export class LoginComponent implements OnInit {
     email:new FormControl(null,[Validators.email,Validators.required]),
     password:new FormControl(null, Validators.required)
   });
-  constructor(private router:Router, private userService :UserService) { }
+  constructor(private router:Router, private userService :UserService, private authService : AuthService) { }
 
   ngOnInit() {
   }
@@ -34,21 +35,21 @@ export class LoginComponent implements OnInit {
 
   login(user) {
 
-    this.userService.loginUser(user).subscribe((res: any) => {
+    this.authService.loginUser(user).subscribe((res: any) => {
       console.log(res)
       if (res.Message === "authentification valide") {
         localStorage.setItem('token', res.token);
-        this.userService.connectedUser = this.userService.getDecodedToken();
-        console.log( this.userService.connectedUser);
-        if (this.userService.connectedUser.role == "Candidat")
+        this.authService.connectedUser = this.authService.getDecodedToken();
+        console.log( this.authService.connectedUser);
+        if (this.authService.connectedUser.role == "Candidat")
         {
           this.router.navigate(['/dashbordCandidat/profilCandidat']);
         }
-        else if (this.userService.connectedUser.role == "Coach")
+        else if (this.authService.connectedUser.role == "Coach")
         {
           this.router.navigate(['/dashbordCoach/cours']);
         }
-        else if(this.userService.connectedUser.role == "Admin")
+        else if(this.authService.connectedUser.role == "Admin")
         {
           this.router.navigate(['/dashbordAdmin/coach']);
         }

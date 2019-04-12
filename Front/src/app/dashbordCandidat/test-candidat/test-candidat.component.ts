@@ -3,7 +3,7 @@ import { Quiz } from '../../../../../model/quiz';
 import { Subscription } from 'rxjs';
 import { QuizService } from '../../service/quiz.service';
 import { UserService } from 'src/app/service/user.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-test-candidat',
   templateUrl: './test-candidat.component.html',
@@ -24,7 +24,7 @@ export class TestCandidatComponent implements OnInit {
   counter ;
   interval = 1000;
  
-  constructor(public quizService: QuizService, public userService: UserService) {
+  constructor(public quizService: QuizService, public userService: UserService, private router:Router) {
   }
   ngOnInit() {
     this.correctAnswer = [];
@@ -54,9 +54,12 @@ export class TestCandidatComponent implements OnInit {
           this.marks++;
         }
     }
-    this.userService.sendMarks(this.userService.connectedUser, this.marks);
+
+    this.userService.sendMarks(this.userService.connectedUser, this.marks).subscribe(res => {
+      this.router.navigateByUrl('/dashbordCandidat/profilCandidat')
     console.log(this.marks++);
-  }
+  })
+}
 
   isAnswered(question) {
     return question.questions.find(x => x.selected) ? 'Answered' : 'Not Answered';

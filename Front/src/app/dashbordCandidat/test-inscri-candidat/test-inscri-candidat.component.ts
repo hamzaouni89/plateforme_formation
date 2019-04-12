@@ -3,6 +3,7 @@ import { Test } from '../../../../../model/test';
 import { Subscription, Subject } from 'rxjs';
 import { TestService } from '../../service/test.service';
 import { UserService } from 'src/app/service/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-test-inscri-candidat',
@@ -25,7 +26,7 @@ export class TestInscriCandidatComponent implements OnInit {
   counter ;
   interval = 1000;
   
-  constructor(public testService: TestService, public userService: UserService) {
+  constructor(public testService: TestService, public userService: UserService, private router:Router) {
   }
 
 
@@ -63,8 +64,11 @@ export class TestInscriCandidatComponent implements OnInit {
           this.marks++;
         }
     }
-    this.userService.sendMarks(this.userService.connectedUser, this.marks);
-    console.log(this.marks++);
+    this.userService.sendMarks(this.userService.connectedUser, this.marks).subscribe(res => {
+      console.log(this.marks);
+      this.router.navigateByUrl('/dashbordCandidat/profilCandidat')
+    });
+    
   }
 
   isAnswered(question) {

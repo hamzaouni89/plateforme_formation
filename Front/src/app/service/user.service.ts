@@ -23,6 +23,9 @@ export class UserService {
         let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
         return this.http.get('http://localhost:3000/users/getUser/ ', { headers: header });
     }
+    getCandidatById(ID) {
+        return this.http.get('http://localhost:3000/users/getCandidatById/ ' + ID);
+    }
 
     getCoach() {
      let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
@@ -45,8 +48,8 @@ export class UserService {
         return this.http.post('http://localhost:3000/users/addCoach', user, { headers: header })
     }
     createCandidat(user) {
-        var header = new HttpHeaders().append('Content-Type', 'application/json');
-        return this.http.post('http://localhost:3000/users/registerCandidat', user, { headers: header})
+        
+        return this.http.post('http://localhost:3000/users/registerCandidat', user)
     }
 
 
@@ -110,13 +113,10 @@ export class UserService {
         return this.http.post('http://localhost:3000/users/sendMarks/' + user.candidat + "/"+ marks ,user, { headers: header })
     }
     logout() {
-        // localStorage.removeItem('email');
+        localStorage.removeItem('token');
         // this.router.navigate(['/']);
-        return this.http.get('http://localhost:3000/users/logout', {
-            observe: 'body',
-            withCredentials: true,
-            headers: new HttpHeaders().append('Content-Type', 'application/json')
-        })
+        //let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+        return this.http.get('http://localhost:3000/users/logout/') 
     }
     envoyerMail(candidat) {
         let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));

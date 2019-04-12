@@ -2,6 +2,8 @@ var express = require('express')
 var router = express.Router();
 var multer = require('multer');
 var passport = require('passport');
+var mongoose = require('mongoose');
+var ObjectId = mongoose.Types.ObjectId;
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -54,9 +56,8 @@ router.get('/getCours',passport.authenticate('bearer', { session: false }), func
     })
 })
 
-router.get('/getCours/:id', passport.authenticate('bearer', { session: false }),function (req, res, next) {
-    var id = req.params.id
-    Cours.findById(id).exec(function (err, cours) {
+router.get('/getCoursByNiveau/:niveau', passport.authenticate('bearer', { session: false }),function (req, res, next) {
+    Cours.find({"niveau" :  req.params.niveau}).exec(function (err, cours) {
         if (err) {
             res.send(err)
         }
@@ -66,7 +67,22 @@ router.get('/getCours/:id', passport.authenticate('bearer', { session: false }),
     })
 })
 
-
+router.post('/validerCours/:id', passport.authenticate('bearer', { session: false }), function (req, res, next) {
+    var id = req.params.id
+    Cours.findByIdAndUpdate({
+        "_id": ObjectId(id)
+    }, {
+        $set: {
+            status: 'Valider',
+        }
+    }).exec(function (err, cours) {
+        if (err) {
+            res.send(err)
+        } else {
+            res.send(cours)
+        }
+    })
+})
 router.get('/deleteCours/:id',passport.authenticate('bearer', { session: false }), function (req, res, next) {
     var id = req.params.id
 

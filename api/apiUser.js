@@ -243,6 +243,10 @@ router.post('/login', function (req, res, next) {
                                 'age' : cand.age,
                                 'niveau' : cand.niveau,
                                 'tel' : cand.tel,
+                                'status' : cand.status,
+                                'marks' : cand.marks,
+                                'notes' : cand.notes,
+                                'etat':cand.etat,
                                 'candidat': cand._id
                             },
                             JWT_SIGN_SECRET, {
@@ -316,21 +320,6 @@ router.post('/login', function (req, res, next) {
 
 });
 
-router.get('/logout', isValidUser, function (req, res, next) {
-    req.logout();
-    req.session.destroy()
-    return res.status(200).send({
-        message: 'Logout Success'
-    });
-})
-
-function isValidUser(req, res, next) {
-    if (req.isAuthenticated()) next();
-    else return res.status(401).send({
-        message: 'Unauthorized Request'
-    });
-}
-
 router.post('/addCandidats/:id', function (req, res, next) {
 
     Candidats.updateOne({
@@ -355,7 +344,6 @@ router.post('/addCandidats/:id', function (req, res, next) {
         }
     })
 })
-
 
 router.post('/updateCoach/:id',passport.authenticate('bearer', { session: false }), function (req, res, next) {
     var id = req.params.id
@@ -533,10 +521,16 @@ router.post('/sendNoteByNiveau/:id/:niveau/:note', passport.authenticate('bearer
     })
 })
 
-
-// router.get('/', (req, res) => {
-//     res.render('contact');
-// });
+router.get('/getCandidatById/:id', function (req, res, next) {
+    User.findOne({candidat : req.params.id}).exec(function (err, user) {
+        if (err) {
+            res.send(err)
+        }
+        else {
+            res.send(user)
+        }
+    })
+})
 
 router.post('/sendMail/:id',passport.authenticate('bearer', { session: false }), function (req, res) {
     var id = req.params.id
