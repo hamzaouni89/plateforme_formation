@@ -422,22 +422,7 @@ router.post('/updateCoach/:id', passport.authenticate('bearer', {
                     res.send(user2)
                 }
             })
-            // User.findOne({
-            //     coach: ObjectId(id)
-            // }).exec(function (err, user2) {
-            //     const token = jwt.sign({
-            //             _id: user2._id,
-            //             email: req.body.email,
-            //             coach: user2.coach
-            //         },
-            //         JWT_SIGN_SECRET, {
-            //             expiresIn: '1h'
-            //         });
-            //     res.status(200).send({
-            //         Message: 'Update token ',
-            //         token: token,
-            //     })
-            // })
+
         }
     })
 })
