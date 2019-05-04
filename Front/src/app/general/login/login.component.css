@@ -1,0 +1,19 @@
+.login{
+    display: -ms-flexbox;
+      display: flex;
+      -ms-flex-align: center;
+      align-items: center;
+      padding-top: 40px;
+      padding-bottom: 40px;
+}
+
+.login-img{
+  width: 500px;
+  height: 350px;
+  margin-top: 120px;
+  margin-left: 50px
+}
+.logo-image{
+  width: 90px;
+  height: 70px;
+}

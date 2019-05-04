@@ -7,16 +7,17 @@ var coursSchema = new mongoose.Schema({
     contenue:  String,
     niveau : Number,
     type: {
-        type: String,
-        enum: ['HTML5', 'Bootstrap', 'JQuery', 'Node JS', 'Angular 7' , 'J2EE', 'Symfony'],
-        default: 'HTML5'
-      },
+      type: String,
+      enum: ['HTML5', 'JavaScript','Bootstrap' , 'Angular 7', 'Node JS' , 'J2EE'],
+      default: 'HTML5'
+    },
     date : String,
-    status :  {
+    status: [{ idCandidat: { type: mongoose.Schema.Types.ObjectId, ref: 'Candidat' }, statu :  {
       type: String,
       enum: ['Valider', 'Non Valider' ],
-      default: 'Non Valider'
-    },
+      default: 'Non Valider',
+    } }],
+  
    owner : { type: mongoose.Schema.Types.ObjectId, ref: 'Coachs' }
   
 })

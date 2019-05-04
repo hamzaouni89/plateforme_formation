@@ -22,9 +22,8 @@ const Cours = require('../model/cours')
 
 router.post('/upload', upload.single("contenue"), function (req, res, next) {
 })
-router.get('/getContenue/:name',passport.authenticate('bearer', { session: false }), function (req, res, next) {
+router.get('/getContenue/:name',  function (req, res, next) {
     res.sendFile('C:/Users/houni/OneDrive/Bureau/Formation/Niveau4/Projet/uploads/' + req.params.name);
-    
 })
 router.post('/addCours',passport.authenticate('bearer', { session: false }), function (req, res, next) {
     var cours = new Cours({
@@ -56,6 +55,7 @@ router.get('/getCours',passport.authenticate('bearer', { session: false }), func
     })
 })
 
+
 router.get('/getCoursByNiveau/:niveau', passport.authenticate('bearer', { session: false }),function (req, res, next) {
     Cours.find({"niveau" :  req.params.niveau}).exec(function (err, cours) {
         if (err) {
@@ -67,13 +67,13 @@ router.get('/getCoursByNiveau/:niveau', passport.authenticate('bearer', { sessio
     })
 })
 
-router.post('/validerCours/:id', passport.authenticate('bearer', { session: false }), function (req, res, next) {
+router.post('/validerCours/:id/:idCandidat', passport.authenticate('bearer', { session: false }), function (req, res, next) {
     var id = req.params.id
     Cours.findByIdAndUpdate({
         "_id": ObjectId(id)
     }, {
-        $set: {
-            status: 'Valider',
+        $push: {
+            status: {idCandidat : req.params.idCandidat , statu: 'Valider'},
         }
     }).exec(function (err, cours) {
         if (err) {
@@ -107,4 +107,13 @@ router.post('/updateCours/:id',passport.authenticate('bearer', { session: false 
         }
     })
 })
+
+router.get('/getNbrCours' , (req, res, next) => {
+    Cours.find().exec((err, cours) => {
+        if(err) {            
+            res.send(err);
+        }
+        res.send(cours);
+    });
+});
 module.exports = router;

@@ -6,7 +6,7 @@ var passport = require('passport');
 router.post('/addTest', passport.authenticate('bearer', { session: false }), function (req, res, next) {
     var test = new Test({
         titre : req.body.titre,
-        descreption : req.body.titre,
+        descreption : req.body.descreption,
         dure : req.body.dure,
         type : req.body.type,
         niveau : req.body.niveau,
@@ -31,9 +31,10 @@ router.get('/getTest', passport.authenticate('bearer', { session: false }), func
     })
 })
 
+
 router.get('/getTestByNiveau/:niveau', passport.authenticate('bearer', { session: false }), function (req, res, next) {
     var niveau = req.params.niveau
-    Test.findOne({niveau : niveau}).exec(function (err, test) {
+    Test.find({niveau : niveau}).exec(function (err, test) {
         if (err) {
             res.send(err)
         }
@@ -60,8 +61,9 @@ router.get('/deleteTest/:id',passport.authenticate('bearer', { session: false })
 router.post('/updateTest/:id',passport.authenticate('bearer', { session: false }), function (req, res, next) {
        
     var id = req.params.id
-    Test.findByIdAndUpdate({ "_id": id }, { $set: {  titre : req.body.titre,
-        descreption : req.body.titre,
+    Test.findByIdAndUpdate({ "_id": id }, { $set: { 
+         titre : req.body.titre,
+        descreption : req.body.descreption,
         dure : req.body.dure,
         type : req.body.type,
         niveau : req.body.niveau,

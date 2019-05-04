@@ -1,0 +1,92 @@
+<!-- ============================================================== -->
+<!-- signup form  -->
+<!-- ============================================================== -->
+
+<div class="row">
+  <div class="col-sm-7">
+    <img class="login-img" src="../../assets/images/register.jpg">
+  </div>
+  <div class="col-sm-5">
+    <div class="register">
+      <!-- ============================================================== -->
+      <!-- signup form  -->
+      <!-- ============================================================== -->
+      <form [formGroup]="registerForm" class="">
+        <div class="card">
+          <div class="card-header">
+            <img class="logo-image" src="../../assets/images/logo.jpeg" alt="logo">
+            <h3 class="mb-1">Register</h3>
+            <p>SVP, Entrez vos informations.</p>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="exampleInputNom">Nom</label>
+                  <input formControlName="nom" type="text" class="form-control" id="exampleInputNom"
+                    aria-describedby="userHelp" placeholder="Nom">
+                  <small id="userHelp" class="form-text text-muted"></small>
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputAge">Age</label>
+                  <input formControlName="age" type="number" class="form-control" id="exampleInputAge"
+                    aria-describedby="userHelp" placeholder="Age">
+                  <small id="userHelp" class="form-text text-muted"></small>
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Email address</label>
+                  <input formControlName="email" type="email" class="form-control" id="exampleInputEmail1"
+                    aria-describedby="emailHelp" placeholder="Email">
+                  <small id="emailHelp" class="form-text text-muted"></small>
+                </div>
+                <div class="form-group">
+                  <label for="CpasswordInput">Confirm Password</label>
+                  <input formControlName="cpass" type="password" class="form-control" id="CpasswordInput"
+                    aria-describedby="CpassHelp" placeholder="Confirm password">
+                  <small id="CpassHelp" class="form-text text-muted"></small>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="exampleInputPrenom">Prenom</label>
+                  <input formControlName="prenom" type="text" class="form-control" id="exampleInputPrenom"
+                    aria-describedby="userHelp" placeholder="Prenom">
+                  <small id="userHelp" class="form-text text-muted"></small>
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputUsername">Niveau</label>
+                  <select formControlName="niveau" class="form-control">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </select>
+                  <small id="userHelp" class="form-text text-muted"></small>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputTel">Tel</label>
+                    <input formControlName="tel" type="number" class="form-control" id="exampleInputTel"
+                      aria-describedby="userHelp" placeholder="Tel">
+                    <small id="userHelp" class="form-text text-muted"></small>
+                  </div>
+                <div class="form-group">
+                  <label for="passwordInput">Password</label>
+                  <input formControlName="password" type="password" class="form-control" id="passwordInput"
+                    aria-describedby="passHelp" placeholder="Password">
+                  <small id="passHelp" class="form-text text-muted"></small>
+                </div>
+              </div>
+            </div>
+            <div class="form-group" style="text-align:center;">
+              <hr>
+              <button type="button" class="btn btn-primary btn-lg btn-block" (click)="register()">Register</button>
+              <hr>
+              <button type="button" class="btn btn-secondary " (click)="moveToLogin()">Login</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

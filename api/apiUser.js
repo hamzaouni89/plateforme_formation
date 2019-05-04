@@ -14,8 +14,10 @@ var ObjectId = mongoose.Types.ObjectId;
 
 const JWT_SIGN_SECRET = 'KJN4511qkqhxq5585x5s85f8f2x8ww8w55x8s52q5w2q2'
 
-router.post('/addCoach', passport.authenticate('bearer', { session: false }), function (req, res) {
-    Coachs.findOne({
+router.post('/addCoach', passport.authenticate('bearer', {
+    session: false
+}), function (req, res) {
+    User.findOne({
             email: req.body.email
         })
         .then(function (userfound) {
@@ -59,8 +61,10 @@ router.post('/addCoach', passport.authenticate('bearer', { session: false }), fu
             })
         });
 })
-router.post('/addAdmin',passport.authenticate('bearer', { session: false }), function (req, res) {
-    Admin.findOne({
+router.post('/addAdmin', passport.authenticate('bearer', {
+    session: false
+}), function (req, res) {
+    User.findOne({
             email: req.body.email
         })
         .then(function (userfound) {
@@ -69,14 +73,14 @@ router.post('/addAdmin',passport.authenticate('bearer', { session: false }), fun
                     var newAdmin = new Admin({
                         nom: req.body.nom,
                         prenom: req.body.prenom,
-                        
+
                     });
                     newAdmin.save().then(function () {
                             Admin.findById(newAdmin._id).exec(function (err, admin) {
                                 var newUser = new User({
                                     email: req.body.email,
                                     admin: admin._id,
-                                    role : "Admin",
+                                    role: "Admin",
                                     password: bcryptedPassword,
                                 });
                                 newUser.save().then(function (newUser) {
@@ -104,7 +108,7 @@ router.post('/addAdmin',passport.authenticate('bearer', { session: false }), fun
         });
 })
 router.post('/registerCandidat', function (req, res) {
-    Candidats.findOne({
+    User.findOne({
             email: req.body.email
         })
         .then(function (userfound) {
@@ -150,7 +154,9 @@ router.post('/registerCandidat', function (req, res) {
             })
         });
 })
-router.get('/getCoach', passport.authenticate('bearer', { session: false }), function (req, res, next) {
+router.get('/getCoach', passport.authenticate('bearer', {
+    session: false
+}), function (req, res, next) {
     Coachs.find().populate('owner').exec(function (err, coachs) {
         if (err) {
             res.send(err)
@@ -160,8 +166,10 @@ router.get('/getCoach', passport.authenticate('bearer', { session: false }), fun
     })
 })
 
-router.get('/getCandidat',passport.authenticate('bearer', { session: false }),  function (req, res, next) {
-    Candidats.find().populate('owner').exec(function (err, candidats) {
+router.get('/getCandidat', passport.authenticate('bearer', {
+    session: false
+}), function (req, res, next) {
+    Candidats.find().populate('candidat').exec(function (err, candidats) {
         if (err) {
             res.send(err)
         } else {
@@ -179,11 +187,38 @@ router.get('/getUser', function (req, res, next) {
         }
     })
 })
-
-router.get('/getCoachByUser/:id', passport.authenticate('bearer', { session: false }), function (req, res, next) {
+router.get('/getUsers', passport.authenticate('bearer', {
+    session: false
+}), (req, res, next) => {
+    Candidats.find().exec((err, users) => {
+        if (err) {
+            res.send(err);
+        }
+        res.send(users);
+    });
+});
+router.get('/getLengthCandidats', (req, res, next) => {
+    Candidats.find().exec((err, use) => {
+        if (err) {
+            res.send(err);
+        }
+        res.send(use);
+    });
+});
+router.get('/getNbrCoachs', (req, res, next) => {
+    Coachs.find().exec((err, coachs) => {
+        if (err) {
+            res.send(err);
+        }
+        res.send(coachs);
+    });
+});
+router.get('/getCoachByUser/:id', passport.authenticate('bearer', {
+    session: false
+}), function (req, res, next) {
     var id = req.params.id
     User.findOne({
-        'coach': ObjectId(id)
+        coach: ObjectId(id)
     }).exec(function (err, user) {
         if (err) {
             res.send(err)
@@ -193,10 +228,12 @@ router.get('/getCoachByUser/:id', passport.authenticate('bearer', { session: fal
     })
 })
 
-router.get('/getCandidatByUser/:id',passport.authenticate('bearer', { session: false }),  function (req, res, next) {
-    var id = req.params.id
-    User.findOne({
-        'candidat': ObjectId(id)
+router.get('/getCandidatByNiveau/:niveau', passport.authenticate('bearer', {
+    session: false
+}), function (req, res, next) {
+    Candidats.find({
+        niveau: req.params.niveau,
+        etat: "Accepter"
     }).exec(function (err, user) {
         if (err) {
             res.send(err)
@@ -217,6 +254,8 @@ router.get('/getuser/:id', function (req, res, next) {
 })
 
 router.post('/login', function (req, res, next) {
+
+
     var password = req.body.password
     var email = req.body.email
     if (password == null || email == null) {
@@ -231,79 +270,85 @@ router.post('/login', function (req, res, next) {
             bcrypt.compare(password, userfound.password, function (err, resBycrypt) {
                 if (resBycrypt) {
                     if (userfound.role === "Candidat") {
-                        Candidats.findOne({
+                        Candidats.find({
                             _id: userfound.candidat
                         }).exec(function (err, cand) {
-                            const token = jwt.sign({
-                                '_id': userfound._id,
-                                'email': userfound.email,
-                                'role': userfound.role,
-                                'nom' : cand.nom,
-                                'prenom' : cand.prenom,
-                                'age' : cand.age,
-                                'niveau' : cand.niveau,
-                                'tel' : cand.tel,
-                                'status' : cand.status,
-                                'marks' : cand.marks,
-                                'notes' : cand.notes,
-                                'etat':cand.etat,
-                                'candidat': cand._id
-                            },
-                            JWT_SIGN_SECRET, {
-                                expiresIn: '1h'
-                            });                  
-                        res.send({
-                            Message: 'authentification valide',
-                            token: token
+                            for (let i = 0; i < cand.length; i++) {
+                                if (cand[i]._id.toString() == userfound.candidat.toString()) {
+                                    const token = jwt.sign({
+                                            '_id': userfound._id,
+                                            'email': userfound.email,
+                                            'role': userfound.role,
+                                            'prenom': cand[i].prenom,
+                                            'nom': cand[i].nom,
+                                            'age': cand[i].age,
+                                            'niveau': cand[i].niveau,
+                                            'tel': cand[i].tel,
+                                            'status': cand[i].status,
+                                            'marks': cand[i].marks,
+                                            'notes': cand[i].notes,
+                                            'etat': cand[i].etat,
+                                            'candidat': cand[i]._id
+                                        },
+                                        JWT_SIGN_SECRET, {
+                                            expiresIn: 3600 * 1000
+                                        });
+                                    res.send({
+                                        Message: 'authentification valide',
+                                        token: token
+                                    })
+
+                                }
+                            }
                         })
-                        })
-                    }
-                    else  if (userfound.role === "Coach") {
-                        Coachs.findOne({
+                    } else if (userfound.role === "Coach") {
+                        Coachs.find({
                             _id: userfound.coach
                         }).exec(function (err, coach) {
-                            const token = jwt.sign({
-                                '_id': userfound._id,
-                                'email': userfound.email,
-                                'role': userfound.role,
-                                'nom' : coach.nom,
-                                'prenom' : coach.prenom,
-                                'niveau' : coach.niveau,
-                                'tel' : coach.tel,
-                                'coach': coach._id
-                            },
-                            JWT_SIGN_SECRET, {
-                                expiresIn: '1h'
-                            });                  
-                        res.send({
-                            Message: 'authentification valide',
-                            token: token
+                            for (let i = 0; i < coach.length; i++) {
+                                if (coach[i]._id.toString() == userfound.coach.toString()) {
+                                    const token = jwt.sign({
+                                            '_id': userfound._id,
+                                            'email': userfound.email,
+                                            'role': userfound.role,
+                                            'nom': coach[i].nom,
+                                            'prenom': coach[i].prenom,
+                                            'niveau': coach[i].niveau,
+                                            'tel': coach[i].tel,
+                                            'coach': coach[i]._id
+                                        },
+                                        JWT_SIGN_SECRET, {
+                                            expiresIn: '1h'
+                                        });
+                                    res.send({
+                                        Message: 'authentification valide',
+                                        token: token
+                                    })
+                                }
+                            }
                         })
-                        })
-                    }
-                    else  if (userfound.role === "Admin") {
+                    } else if (userfound.role === "Admin") {
                         Admin.findOne({
                             _id: userfound.admin
                         }).exec(function (err, admin) {
                             const token = jwt.sign({
-                                '_id': userfound._id,
-                                'email': userfound.email,
-                                'role': userfound.role,
-                                'nom' : admin.nom,
-                                'prenom' : admin.prenom,
-                                'admin':admin._id
-                             },
-                            JWT_SIGN_SECRET, {
-                                expiresIn: '1h'
-                            });                  
-                        res.send({
-                            Message: 'authentification valide',
-                            token: token
-                        })
+                                    '_id': userfound._id,
+                                    'email': userfound.email,
+                                    'role': userfound.role,
+                                    'nom': admin.nom,
+                                    'prenom': admin.prenom,
+                                    'admin': admin._id
+                                },
+                                JWT_SIGN_SECRET, {
+                                    expiresIn: '1h'
+                                });
+                            res.send({
+                                Message: 'authentification valide',
+                                token: token
+                            })
                         })
                     }
-                } 
-                else {
+                } else {
                     res.send({
                         'error': 'invalid password'
                     })
@@ -345,7 +390,9 @@ router.post('/addCandidats/:id', function (req, res, next) {
     })
 })
 
-router.post('/updateCoach/:id',passport.authenticate('bearer', { session: false }), function (req, res, next) {
+router.post('/updateCoach/:id', passport.authenticate('bearer', {
+    session: false
+}), function (req, res, next) {
     var id = req.params.id
     Coachs.findByIdAndUpdate({
         "_id": ObjectId(id)
@@ -395,7 +442,9 @@ router.post('/updateCoach/:id',passport.authenticate('bearer', { session: false 
     })
 })
 
-router.get('/deleteCoach/:id', passport.authenticate('bearer', { session: false }), function (req, res, next) {
+router.get('/deleteCoach/:id', passport.authenticate('bearer', {
+    session: false
+}), function (req, res, next) {
     var id = req.params.id
     Coachs.findByIdAndRemove(ObjectId(id)).exec(function (err, coach) {
         if (err) {
@@ -414,7 +463,9 @@ router.get('/deleteCoach/:id', passport.authenticate('bearer', { session: false 
     })
 })
 
-router.get('/deleteCandidat/:id',passport.authenticate('bearer', { session: false }), function (req, res, next) {
+router.get('/deleteCandidat/:id', passport.authenticate('bearer', {
+    session: false
+}), function (req, res, next) {
     var id = req.params.id
     Candidats.findByIdAndRemove(ObjectId(id)).exec(function (err) {
         if (err) {
@@ -433,19 +484,18 @@ router.get('/deleteCandidat/:id',passport.authenticate('bearer', { session: fals
     })
 })
 
-router.post('/updateCandidat/:id',passport.authenticate('bearer', { session: false }), function (req, res, next) {
+router.post('/updateCandidat/:id', passport.authenticate('bearer', {
+    session: false
+}), function (req, res, next) {
     var id = req.params.id
     Candidats.findByIdAndUpdate({
-        "_id": ObjectId(id)
+        _id: ObjectId(id)
     }, {
         $set: {
             nom: req.body.nom,
             prenom: req.body.prenom,
             tel: req.body.tel,
             age: req.body.age,
-            niveau: req.body.niveau,
-            status: req.body.status,
-            etat: req.body.etat,
         }
     }).exec(function (err, user) {
         if (err) {
@@ -461,21 +511,44 @@ router.post('/updateCandidat/:id',passport.authenticate('bearer', { session: fal
                 if (errr) {
                     res.send(errr)
                 } else {
-                    res.send(user2)
+                    const token = jwt.sign({
+                            '_id': user2._id,
+                            'email': req.body.email,
+                            'role': user2.role,
+                            'prenom': req.body.prenom,
+                            'nom': req.body.nom,
+                            'age': req.body.age,
+                            'niveau': user.niveau,
+                            'tel': req.body.tel,
+                            'status': user.status,
+                            'marks': user.marks,
+                            'notes': user.notes,
+                            'etat': user.etat,
+                            'candidat': user2.candidat
+                        },
+                        JWT_SIGN_SECRET, {
+                            expiresIn: 3600 * 1000
+                        });
+                    res.status(200).send({
+                        Message: 'Update token ',
+                        token: token,
+                    })
                 }
             })
-
         }
     })
 })
 
-router.post('/updateStatuCandidat/:id', passport.authenticate('bearer', { session: false }), function (req, res, next) {
+router.post('/updateEtatCandidat/:id', passport.authenticate('bearer', {
+    session: false
+}), function (req, res, next) {
     var id = req.params.id
     Candidats.findByIdAndUpdate({
         "_id": ObjectId(id)
     }, {
         $set: {
             status: 'Payée',
+            etat : 'Accepter',
         }
     }).exec(function (err, user) {
         if (err) {
@@ -485,10 +558,9 @@ router.post('/updateStatuCandidat/:id', passport.authenticate('bearer', { sessio
         }
     })
 })
-router.post('/sendMarks/:id/:marks', passport.authenticate('bearer', { session: false }), function (req, res, next) {
-    console.log(req.params);
-    console.log("markes:",req.params.marks);
-    
+router.post('/sendMarks/:id/:marks', passport.authenticate('bearer', {
+    session: false
+}), function (req, res, next) {
     Candidats.findByIdAndUpdate({
         "_id": ObjectId(req.params.id)
     }, {
@@ -504,13 +576,17 @@ router.post('/sendMarks/:id/:marks', passport.authenticate('bearer', { session: 
     })
 })
 
-router.post('/sendNoteByNiveau/:id/:niveau/:note', passport.authenticate('bearer', { session: false }), function (req, res, next) {
-
+router.post('/sendNoteByNiveau/:id/:niveau/:note', passport.authenticate('bearer', {
+    session: false
+}), function (req, res, next) {
     Candidats.findByIdAndUpdate({
         "_id": ObjectId(req.params.id)
     }, {
         $set: {
-            notes: {niveau : req.params.niveau , note : req.params.note},
+            notes: {
+                niveau: req.params.niveau,
+                note: req.params.note
+            },
         }
     }).exec(function (err, user) {
         if (err) {
@@ -521,18 +597,23 @@ router.post('/sendNoteByNiveau/:id/:niveau/:note', passport.authenticate('bearer
     })
 })
 
-router.get('/getCandidatById/:id', function (req, res, next) {
-    User.findOne({candidat : req.params.id}).exec(function (err, user) {
+router.get('/getCandidatById/:id', passport.authenticate('bearer', {
+    session: false
+}), function (req, res, next) {
+    Candidats.findById({
+        _id: req.params.id
+    }).exec(function (err, user) {
         if (err) {
             res.send(err)
-        }
-        else {
+        } else {
             res.send(user)
         }
     })
 })
 
-router.post('/sendMail/:id',passport.authenticate('bearer', { session: false }), function (req, res) {
+router.post('/sendMail/:id', passport.authenticate('bearer', {
+    session: false
+}), function (req, res) {
     var id = req.params.id
     const output = `
       <p>You have a new contact request</p>
@@ -591,52 +672,55 @@ router.post('/sendMail/:id',passport.authenticate('bearer', { session: false }),
     })
 
 });
-// router.post('/updateUser/:id', function (req, res, next) {
-//     var id = req.params.id
-//     Candidats.findByIdAndUpdate({
-//         "_id": id
-//     }, {
-//         $set: {
-//             nom: req.body.nom,
-//             prenom: req.body.prenom,
-//             email: req.body.email,
-//             tel: req.body.tel,
-//             age: req.body.age,
-//             niveau: req.body.niveau,
-//             status: req.body.status,
-//             etat: req.body.etat,
-//         }
-//     }).exec(function (err, user) {
-//         if (err) {
-//             res.send(err)
 
-//         } else {
+router.post('/cantactMail', function (req, res) {
+
+    const output = `
+      <p>You have a new contact request</p>
+      <h3>Contact Details</h3>
+      <ul>  
+        <li>Name: ${req.body.nom} ${req.body.prenom} </li>
+        <li>Email: ${req.body.email}</li>
+        <li>Phone: ${req.body.tel}</li>
+      </ul>
+      <h3>Message</h3>
+      <p>${req.body.message}</p>
+    `;
 
 
-//             User.findById(id).exec(function (err, user) {
+    // create reusable transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        port: 587,
+        secure: false, // true for 465, false for other ports
+        auth: {
+            user: req.body.email, // generated ethereal user
+            pass: req.body.password // generated ethereal password
+        },
+        tls: {
+            rejectUnauthorized: false
+        }
+    });
+    // setup email data with unicode symbols
+    let mailOptions = {
+        from: '"Dev Web Center" <req.body.email>', // sender address
+        to: "dev2019center@gmail.com", // list of receivers
+        subject: "Cantact", // Subject line
+        text: 'Hello world?', // plain text body
+        html: output // html body
+    };
 
-//                 const token = jwt.sign({
-//                         _id: user._id,
-//                         email: user.email,
-//                         nom: user.nom,
-//                         prenom: user.prenom,
-//                         age: user.age,
-//                         etat: req.body.etat,
-//                         tel: req.body.tel,
-//                         niveau: req.body.niveau,
-//                         status: req.body.status,
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            res.send(error);
+        } else {
+            res.send({
+                'Email sent': info.response
+            });
+        }
+    });
+});
 
-//                     },
-//                     JWT_SIGN_SECRET, {
-//                         expiresIn: '1h'
-//                     });
-//                 res.status(200).send({
-//                     Message: 'Update token ',
-//                     token: token,
-//                 })
-//             })
-//         }
-//     })
-// })
 
 module.exports = router;

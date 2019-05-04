@@ -1,0 +1,95 @@
+<div *ngIf="token">
+  <div *ngIf="!onchange && user?.etat=== 'En attente'">
+    <div class="container bootstrap snippet">
+      <div class="row style">
+        <div class="col-sm-12">
+          <div class="jumbotron">
+            <h1 class="display-4">Bonjour, {{user?.prenom}} {{user?.nom}}!</h1>
+            <p class="lead">Vous vous êtes connecté avec succès à notre platforme.</p>
+            <hr class="my-4">
+            <p>Maintenant il vous reste que passer le test de niveau</p>
+            <p>Pour le passer <a 
+                (click)="changeVal()">
+                Cliquez-ici</a></p>
+            <p class="lead" style="color:white;">
+              <a class="btn btn-primary btn-lg" role="button" (click)="logout()">Log Out</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div *ngIf="onchange && user?.etat=== 'En attente'">
+      <app-test-inscri-candidat></app-test-inscri-candidat>
+    </div>
+    <div *ngIf="!onchange && user?.etat === 'Accepter'">
+     
+      <div class="dashboard-main-wrapper">
+        <!-- ============================================================== -->
+        <!-- navbar -->
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="nav-left-sidebar sidebar-dark">
+              <div class="menu-list">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                  <a class="d-xl-none d-lg-none text-white">Dashboard</a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav flex-column">
+                      <li class="nav-divider">
+                        Menu
+                      </li>
+                      <li class="nav-item ">
+                        <a class="nav-link active" [routerLink]="['/general/dashbordCandidat/profilCandidat']"
+                          data-toggle="collapse" aria-expanded="false" aria-controls="submenu-1"><i
+                            class="fas fa-arrow-right"></i>Profil
+                          <span class="badge badge-success">1</span></a>
+                      </li>
+                      <li class="nav-item ">
+                        <a class="nav-link active" [routerLink]="['/general/dashbordCandidat/coursCandidat']"
+                          data-toggle="collapse" aria-expanded="false" aria-controls="submenu-1"><i
+                            class="fas fa-arrow-right"></i>Liste des Cours
+                          <span class="badge badge-success">1</span></a>
+                      </li>
+                      <li class="nav-item ">
+                        <a class="nav-link active" [routerLink]="['/general/dashbordCandidat/test']"
+                          data-toggle="collapse" aria-expanded="false" aria-controls="submenu-1"><i
+                            class="fas fa-arrow-right"></i>Quiz
+                          <span class="badge badge-success">1</span></a>
+                      </li>
+                      <li class="nav-item ">
+                        <a class="nav-link active" [routerLink]="['/general/dashbordCandidat/chat']"
+                          data-toggle="collapse" aria-expanded="false" aria-controls="submenu-1"><i
+                            class="fas fa-arrow-right"></i>ِChat
+                          <span class="badge badge-success">1</span></a>
+                      </li>
+                    </ul>
+                  </div>
+                </nav>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-9">
+            <div class="dashboard-wrapper">
+              <div class="container-fluid dashboard-content">
+                <div class="row">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <router-outlet></router-outlet>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+ 
+  <div *ngIf="user?.etat=== 'Refuser'">
+
+  </div>
+</div>

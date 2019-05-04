@@ -77,11 +77,11 @@ router.post('/updateQuiz/:id',passport.authenticate('bearer', { session: false }
 
 router.get('/getQuizByNiveau/:niveau', passport.authenticate('bearer', { session: false }), function (req, res, next) {
     var niveau = req.params.niveau
-    Quiz.findOne({niveau : niveau}).exec(function (err, quiz) {
+    Quiz.find({niveau : niveau}).exec(function (err, quiz) {
         if (err) {
             res.send(err)
         }
-        else {
+        else {            
             res.send(quiz)
         }
     })

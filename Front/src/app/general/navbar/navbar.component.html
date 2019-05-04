@@ -1,0 +1,128 @@
+
+<header id="header" class="header">
+  <div class="header-top bg-info sm-text-center">
+    <div class="row">
+      <div class="col-md-3 text-center">
+        <i class="fas fa-phone-square text-white mr-5"> (+216) 12-345-678</i>
+      </div>
+      <div class="col-md-4 text-center">
+        <i class="fas fa-at text-white mr-5"> dev2019center@gmail.com</i>
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-3 text-right">
+        <div *ngIf="token">
+          <div>
+            <a [routerLink]="['/general/profil']" routerLinkActive="active" class="text-white ajaxload-popup">
+              {{userService.connectedUser.nom}}
+              {{userService.connectedUser.prenom}}</a>
+          </div>
+          <div>
+            <a (click)="logout()" class="text-white ajaxload-popup"><i class="fas fa-sign-out-alt"> Logout</i></a>
+          </div>
+        </div>
+        <div *ngIf="!token">
+          <a [routerLink]="['/general/login']" href="#home" routerLinkActive="active" class="text-white ajaxload-popup"><i
+              class="fas fa-sign-in-alt"></i> Login </a> /
+          <a [routerLink]="['/general/register']"  href="#home" routerLinkActive="active" class="text-white ajaxload-popup"><i
+              class="fas fa-user-plus"></i>Register</a>
+        </div>
+      </div>
+      <div class="col-md-1"></div>
+    </div>
+  </div>
+  <div class="header-middle p-0 xs-text-center">
+    <div class=" pt-20 pb-20">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-2 text-right">
+          <img class="image " src="../../assets/images/logo.jpeg" alt="">
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-10">
+          <div class="row">
+            <div class="col-xs-12 col-sm-3 col-md-3">
+              <div class="widget no-border sm-text-center mt-10 mb-10 m-0">
+                <br>
+                <h5 >Pour plus d'information</h5>
+                <h2 class="font-12 text-center text-uppercase">Contactez-nous </h2>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-3 col-md-2">
+              <div class="widget no-border sm-text-center mt-10 mb-10 m-0">
+                <h1 class="fas fa-headphones-alt icon-color"></h1>
+                <h5> +(216) 12 345 678</h5>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-3 col-md-3">
+              <div class="widget no-border sm-text-center mt-10 mb-10 m-0">
+                <h1 class="fas fa-envelope icon-color"></h1>
+                <h5> cantact@dev-center.com</h5>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-3 col-md-3">
+              <div class="widget no-border sm-text-center mt-10 mb-10 m-0">
+                <h1 class="fas fa-map-marker-alt icon-color"></h1>
+                <h5> L'aouina 2045 Tunis</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="header-nav bg-info">
+    <div class="row">
+      <div class="container">
+        <nav class="mb-1 navbar navbar-expand-lg navbar-dark info-color ">
+          <a class="navbar-brand" href="#">Web Dev Center</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-4"
+            aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse text-white" id="navbarSupportedContent-4"> 
+            <div *ngIf="token">    
+            <div *ngIf="userService.connectedUser.role == 'Admin'"> 
+            <ul class="navbar-nav ml-auto text-white">
+              <li class="nav-item active"><a class="nav-link" href="#home">Home</a></li>
+              <li class="nav-item"><a class="nav-link" [routerLink]="['/general/dashbordAdmin/coach']" routerLinkActive="active">Coach</a></li>
+              <li class="nav-item"><a class="nav-link" [routerLink]="['/general/dashbordAdmin/candidat']" routerLinkActive="active">Candidats</a></li>
+              <li class="nav-item"><a class="nav-link" [routerLink]="['/general/dashbordAdmin/test']" routerLinkActive="active">Tests Inscri</a></li>
+            </ul>
+          </div>
+          <div *ngIf="userService.connectedUser.role == 'Coach'">
+            <ul class="navbar-nav ml-auto text-white">
+              <li class="nav-item active"><a class="nav-link" href="#home">Home</a></li>
+              <li class="nav-item"><a class="nav-link" [routerLink]="['/general/dashbordoach/cours']" routerLinkActive="active">Cours</a></li>
+              <li class="nav-item"><a class="nav-link" [routerLink]="['/general/dashbordoach/candidatByNiveau']" routerLinkActive="active">Candidats</a></li>
+              <li class="nav-item"><a class="nav-link" [routerLink]="['/general/dashbordCoach/quiz']" routerLinkActive="active">Quiz</a></li>
+                </ul>
+          </div>
+          <div *ngIf="userService.connectedUser.role == 'Candidat'">
+            <ul class="navbar-nav ml-auto text-white">
+              <li class="nav-item active"><a class="nav-link"[routerLink]="['/general/dashbordCandidat/profilCandidat']" routerLinkActive="active">Profil</a></li>
+              <li class="nav-item"><a class="nav-link" [routerLink]="['/general/dashbordCandidat/coursCandidat']" routerLinkActive="active">Cours</a></li>
+              <li class="nav-item"><a class="nav-link" [routerLink]="['/general/dashbordCandidat/test']" routerLinkActive="active">Quiz</a></li>
+              <li class="nav-item"><a class="nav-link" [routerLink]="['/general/dashbordCandidat/chat']" routerLinkActive="active">Chat</a></li>
+              <li class="nav-item"><a class="nav-link" [routerLink]="['/general/cantact']" routerLinkActive="active" >Cantact</a></li>
+            </ul>
+          </div>
+        </div>   
+        <div *ngIf="!token">
+        <ul class="navbar-nav ml-auto text-white">
+            <li class="nav-item"><a class="nav-link" [routerLink]="['/general/niveau']" routerLinkActive="active" >Cours</a></li>
+              <li class="nav-item"><a class="nav-link" [routerLink]="['/general/cantact']" routerLinkActive="active" >Cantact</a></li>
+          </ul>
+        </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- <div class="continer-fluid">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div> -->

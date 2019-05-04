@@ -1638,10 +1638,10 @@ Left Navigation Sidebar
 ------------------------- */
 
 .nav-left-sidebar {
-    position: fixed;
+    position: relative;
     width: 264px;
     height: 100%;
-    top: 60px;
+    /* top: 10px; */
     overflow: auto;
     background-color: #fff;
     -webkit-box-shadow: 0px 0px 28px 0px rgba(82, 63, 105, 0.13);
@@ -1805,26 +1805,26 @@ Leftsidebar - dark
 ------------------------- */
 
 .sidebar-dark {
-    background-color: #0e0c28;
+    background-color: #17a2b8;
     -webkit-box-shadow: 0px 0px 28px 0px rgba(82, 63, 105, 0.13);
     box-shadow: 0px 0px 28px 0px rgba(82, 63, 105, 0.13);
     -webkit-transition: all 0.3s ease;
 }
 
 .sidebar-dark .nav-divider {
-    color: #a4aadb;
+    color: #fffffe;
     font-size: 12px;
     letter-spacing: 1px;
 }
 
 .sidebar-dark.nav-left-sidebar .nav-link i {
-    color: #7a80b4;
+    color: #242849;
 }
 
 .sidebar-dark.nav-left-sidebar .navbar-nav .nav-item {}
 
 .sidebar-dark.nav-left-sidebar .navbar-nav .nav-link {
-    color: #7a80b4;
+    color: #17a2b8;
 }
 
 .sidebar-dark.nav-left-sidebar .navbar-nav .nav-link:focus,
@@ -1936,14 +1936,14 @@ Container / Wrapper
 
 .dashboard-main-wrapper {
     min-height: 100%;
-    padding-top: 60px;
+    /* padding-top: 60px; */
     position: relative;
 }
 
 .dashboard-wrapper {
     position: relative;
     left: 0;
-    margin-left: 264px;
+    /* margin-left: 264px; */
     min-height: 870px !important;
 }
 

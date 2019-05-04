@@ -32,6 +32,6 @@ export class QuizService {
     let header = new HttpHeaders().append('Authorization', 'Bearer ' + localStorage.getItem('token'));
     return this.http.get(`http://localhost:3000/quiz/getQuizByNiveau/${niveau}` ,{ headers: header})
   }
-
+ 
 
 }
