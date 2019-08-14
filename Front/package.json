@@ -22,6 +22,7 @@
     "@angular/router": "^7.2.15",
     "core-js": "^2.6.9",
     "jwt-decode": "^2.2.0",
+    "lodash": "^4.17.13",
     "ngx-socket-io": "^2.1.1",
     "rxjs": "~6.3.3",
     "rxjs-compat": "^6.5.2",
